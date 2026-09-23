@@ -12,15 +12,15 @@
 
     :root {
       --bg: #080808;
-      --card: #0f0f0f;
-      --border: #1c1c1c;
+      --card: #111;
+      --border: #1e1e1e;
       --text: #e6e0d6;
       --muted: #6b6560;
       --red: #c0281f;
-      --red-dim: #5a1210;
+      --red-dim: #4a0e0c;
     }
 
-    html { scroll-behavior: smooth; }
+    html, body { height: 100%; overflow: hidden; }
 
     body {
       background: var(--bg);
@@ -31,819 +31,784 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+    /* ── DECK ── */
+    .deck {
+      position: fixed;
+      inset: 0;
+      bottom: 60px;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      overflow-y: auto;
+      padding: 48px 64px 24px;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 60px;
+      border-top: 1px solid var(--border);
+      display: flex;
       align-items: center;
-      gap: 80px;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 80px 48px;
+      justify-content: space-between;
+      padding: 0 48px;
+      background: var(--bg);
+      z-index: 100;
     }
 
-    .eyebrow {
-      font-size: 0.7rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 28px;
-    }
-
-    h1 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(3.5rem, 6vw, 6rem);
-      font-weight: 300;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      margin-bottom: 36px;
-    }
-
-    h1 em { font-style: italic; color: var(--red); }
-
-    .hero-desc {
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.85;
-      max-width: 400px;
-    }
-
-    .hero-img img {
-      width: 100%;
-      max-height: 85vh;
-      object-fit: contain;
-    }
-
-    /* ── LAYOUT ── */
-    .divider { height: 1px; background: var(--border); max-width: 1200px; margin: 0 auto; }
-
-    section {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 96px 48px;
-    }
-
-    .sec-label {
-      font-size: 0.68rem;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 14px;
-    }
-
-    h2 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(2.2rem, 4vw, 3.75rem);
-      font-weight: 300;
-      line-height: 1.08;
-      margin-bottom: 18px;
-    }
-
-    .sec-intro {
-      color: var(--muted);
-      font-size: 1rem;
-      max-width: 580px;
-      margin-bottom: 64px;
-      line-height: 1.8;
-    }
-
-    h3 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.9rem;
-      font-weight: 400;
-      line-height: 1.15;
-      margin-bottom: 14px;
-    }
-
-    /* ── REFERENCE GRID ── */
-    .ref-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto auto;
-      gap: 8px;
-    }
-
-    .ref-grid .ref-item:nth-child(1) { grid-column: 1 / 3; }
-    .ref-grid .ref-item:nth-child(2) { grid-column: 3; grid-row: 1 / 3; }
-    .ref-grid .ref-item:nth-child(3),
-    .ref-grid .ref-item:nth-child(4),
-    .ref-grid .ref-item:nth-child(5) { grid-column: auto; }
-
-    .ref-item {
-      overflow: hidden;
-      background: var(--card);
-      min-height: 320px;
-    }
-
-    .ref-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.5s ease;
-    }
-
-    .ref-item:hover img { transform: scale(1.04); }
-
-    /* ── DNA GRID ── */
-    .dna-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1px;
-      background: var(--border);
+    .nav-btn {
+      background: none;
       border: 1px solid var(--border);
-      margin-top: 0;
+      color: var(--text);
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, color 0.2s;
+      flex-shrink: 0;
     }
+    .nav-btn:hover { border-color: var(--red); color: var(--red); }
+    .nav-btn:disabled { opacity: 0.2; cursor: default; }
+    .nav-btn:disabled:hover { border-color: var(--border); color: var(--text); }
 
-    .dna-card {
-      background: var(--card);
-      padding: 40px 36px;
+    .nav-center { display: flex; align-items: center; gap: 16px; }
+
+    .dots { display: flex; gap: 5px; }
+    .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #2a2a2a;
+      transition: background 0.2s, transform 0.2s;
+      cursor: pointer;
     }
+    .dot.active { background: var(--red); transform: scale(1.4); }
 
-    .dna-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 3.5rem;
-      color: var(--red-dim);
-      line-height: 1;
-      margin-bottom: 22px;
-    }
-
-    .dna-title {
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .dna-desc {
-      font-size: 0.9375rem;
-      color: var(--muted);
-      line-height: 1.8;
-    }
-
-    /* ── PRINCIPLE ── */
-    .principle {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-      padding: 72px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .principle:last-child { border-bottom: none; }
-
-    .principle.flip { direction: rtl; }
-    .principle.flip > * { direction: ltr; }
-
-    .p-tag {
+    .counter {
       font-size: 0.68rem;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      min-width: 38px;
+      text-align: center;
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .label {
+      font-size: 0.63rem;
+      letter-spacing: 0.26em;
       text-transform: uppercase;
       color: var(--red);
       margin-bottom: 10px;
     }
 
-    .p-body {
-      color: var(--muted);
-      font-size: 0.9375rem;
-      line-height: 1.85;
-      margin-top: 14px;
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(3rem, 5.5vw, 5rem);
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    h1 em { font-style: italic; color: var(--red); }
+
+    h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.8rem, 3vw, 2.75rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 12px;
     }
 
-    .p-body strong { color: var(--text); font-weight: 400; }
-
-    .p-img img {
-      width: 100%;
-      max-height: 620px;
-      object-fit: contain;
+    h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 8px;
     }
 
-    /* ── COMPARISON ── */
-    .comparison-wrap { margin-top: 40px; }
-    .comparison-wrap img { width: 100%; max-height: 520px; object-fit: contain; }
+    .body { font-size: 0.9rem; color: var(--muted); line-height: 1.85; }
+    .body strong { color: var(--text); font-weight: 400; }
+    .body em { color: var(--text); font-style: italic; }
 
-    /* ── CHECKLIST ── */
-    .checklist {
+    .intro { font-size: 1rem; color: var(--muted); line-height: 1.85; }
+
+    /* ── LAYOUTS ── */
+    .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0 64px;
+      gap: 64px;
+      align-items: center;
     }
 
-    .check {
+    .two-col.top { align-items: start; }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* ── CARDS ── */
+    .card-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-top: 24px;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 24px;
+    }
+
+    .card-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      color: var(--red-dim);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .card-tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .card-body { font-size: 0.85rem; color: var(--muted); line-height: 1.75; }
+
+    /* ── IMAGES ── */
+    .img-ph {
+      background: var(--card);
+      border: 1px dashed #222;
       display: flex;
-      align-items: flex-start;
-      gap: 18px;
-      padding: 20px 0;
+      align-items: center;
+      justify-content: center;
+      color: #2e2e2e;
+      font-size: 0.72rem;
+      padding: 20px;
+      min-height: 180px;
+      text-align: center;
+    }
+
+    .ref-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .ref-grid .r1 { grid-column: 1 / 3; }
+    .ref-grid .r2 { grid-row: 1 / 3; }
+
+    .ref-item { overflow: hidden; background: var(--card); min-height: 160px; }
+    .ref-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+    .ref-item:hover img { transform: scale(1.04); }
+
+    .slide-img { width: 100%; object-fit: contain; display: block; }
+
+    .img-caption {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── CHECKLIST ── */
+    .checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 0 52px; }
+
+    .check {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 0;
       border-bottom: 1px solid var(--border);
     }
 
     .checkbox {
-      width: 16px;
-      height: 16px;
+      width: 13px; height: 13px;
       border: 1px solid var(--red);
-      flex-shrink: 0;
-      margin-top: 4px;
+      flex-shrink: 0; margin-top: 4px;
     }
 
-    .check-label { font-size: 0.9375rem; line-height: 1.55; }
+    .check-label { font-size: 0.875rem; line-height: 1.5; }
+    .check-sub { display: block; font-size: 0.76rem; color: var(--muted); margin-top: 2px; line-height: 1.5; }
 
-    .check-sub {
-      display: block;
-      font-size: 0.8125rem;
-      color: var(--muted);
-      margin-top: 5px;
-      line-height: 1.6;
-    }
-
-    /* ── IMAGE PLACEHOLDER ── */
-    .img-ph {
-      background: var(--card);
-      border: 1px dashed #252525;
-      display: none;
-      flex-direction: column;
+    /* ── HERO SLIDE ── */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
       align-items: center;
-      justify-content: center;
-      min-height: 300px;
-      color: #383838;
-      font-size: 0.8125rem;
-      text-align: center;
-      padding: 24px;
-      gap: 10px;
+      height: calc(100vh - 120px);
     }
 
-    .img-ph code {
-      font-size: 0.75rem;
-      color: #2a2a2a;
-      font-family: 'SF Mono', 'Fira Code', monospace;
-    }
+    .hero-grid img { max-height: 76vh; width: 100%; object-fit: contain; }
 
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 44px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.8125rem;
-      color: var(--muted);
-      max-width: 100%;
+    /* ── ASK SLIDE ── */
+    .ask-statement {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.6rem, 2.8vw, 2.5rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 24px;
     }
+    .ask-statement em { font-style: italic; color: var(--red); }
 
-    footer a { color: var(--red); text-decoration: none; }
+    /* ── SHADING SLIDE LAYOUT ── */
+    .shading-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+      margin-top: 20px;
+    }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 860px) {
-      .hero { grid-template-columns: 1fr; gap: 48px; min-height: auto; padding: 60px 24px; }
-      section { padding: 64px 24px; }
-      .ref-grid { grid-template-columns: 1fr 1fr; }
-      .ref-grid .ref-item:nth-child(1),
-      .ref-grid .ref-item:nth-child(2) { grid-column: auto; grid-row: auto; }
-      .principle { grid-template-columns: 1fr; gap: 40px; direction: ltr; }
-      .principle.flip { direction: ltr; }
+    @media (max-width: 800px) {
+      .slide { padding: 32px 24px 16px; }
+      .nav { padding: 0 20px; }
+      .two-col, .three-col, .hero-grid, .shading-layout { grid-template-columns: 1fr; gap: 32px; height: auto; }
       .checklist { grid-template-columns: 1fr; }
-      footer { flex-direction: column; gap: 8px; text-align: center; padding: 36px 24px; }
+      .ref-grid { grid-template-columns: 1fr 1fr; }
+      .ref-grid .r1, .ref-grid .r2 { grid-column: auto; grid-row: auto; }
     }
   </style>
 </head>
 <body>
 
-<!-- ╔══════════════════════════════════════╗ -->
-<!--  HERO                                   -->
-<!-- ╚══════════════════════════════════════╝ -->
-<div class="hero">
-  <div class="hero-text">
-    <p class="eyebrow">A Creative Brief</p>
-    <h1>For<br><em>Bobby</em></h1>
-    <p class="hero-desc">
-      Bayun designed this piece for my leg. He can't be here to execute it,
-      so I'm bringing it to you. This brief exists to make sure his DNA
-      travels with the design. Everything on this page is something that matters.
+<div class="deck">
+
+  <!-- ════════════════════════════════ -->
+  <!--  1 — TITLE                      -->
+  <!-- ════════════════════════════════ -->
+  <div class="slide active">
+    <div class="hero-grid">
+      <div>
+        <p class="label">A Creative Brief</p>
+        <h1>For<br><em>Bobby</em></h1>
+        <p class="intro" style="max-width:420px">
+          Bayun designed this snake for my leg. He can't be here to execute it,
+          so I'm bringing it to you. This brief documents his style so that his DNA
+          travels with the design.
+        </p>
+        <p style="font-size:0.72rem; color:var(--muted); margin-top:20px; letter-spacing:0.04em">← → to navigate &nbsp;·&nbsp; touch to swipe</p>
+      </div>
+      <div>
+        <img src="images/design.jpg" alt="Bayun's design" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph" style="min-height:400px">images/design.jpg</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!--  2 — THE ASK                    -->
+  <!-- ════════════════════════════════ -->
+  <div class="slide">
+    <div class="hero-grid">
+      <div>
+        <p class="label">The Ask</p>
+        <p class="ask-statement">
+          Show me a <em>shaded version</em> of this design — with full awareness of what makes Bayun's work beautiful.
+        </p>
+        <p class="body" style="max-width:460px">
+          Bayun's design handles the structure and silhouette. What we need from you
+          is to execute the shading and surface detail in his technical language —
+          the scale work, the shadow logic, the tonal depth that gives his snakes
+          that dimensional quality.
+          <br><br>
+          Everything in this brief is a reference to help you understand that language
+          before you touch the design.
+        </p>
+      </div>
+      <div>
+        <img src="images/design.jpg" alt="Bayun's design" style="max-height:70vh; width:100%; object-fit:contain" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph" style="min-height:400px">images/design.jpg</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!--  3 — BAYUN'S WORK               -->
+  <!-- ════════════════════════════════ -->
+  <div class="slide">
+    <p class="label">01 — The Artist</p>
+    <h2>Bayun's Work</h2>
+    <p class="body" style="max-width:580px">
+      This is what Bayun does. This is the visual language and technical standard Bobby needs to work in.
     </p>
-  </div>
-  <div class="hero-img">
-    <img src="images/design.jpg" alt="Bayun's design" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-    <div class="img-ph" style="min-height:560px"><code>images/design.jpg</code>Bayun's design for your piece</div>
-  </div>
-</div>
-
-<div class="divider"></div>
-
-<!-- ╔══════════════════════════════════════╗ -->
-<!--  01 — THE ARTIST                        -->
-<!-- ╚══════════════════════════════════════╝ -->
-<section>
-  <p class="sec-label">01 — The Artist</p>
-  <h2>Bayun's Work</h2>
-  <p class="sec-intro">
-    Before my piece specifically — this is the visual language.
-    These are Bayun's snakes across different placements.
-    This is the standard to match.
-  </p>
-
-  <div class="ref-grid">
-    <div class="ref-item" style="min-height:500px">
-      <img src="images/ref-leg-red-cord.jpg" alt="Leg/hip piece with red cord" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph"><code>images/ref-leg-red-cord.jpg</code>Leg/hip piece — the red cord piece</div>
-    </div>
-    <div class="ref-item" style="min-height:500px">
-      <img src="images/ref-shoulder-thorns.jpg" alt="Full back piece" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph"><code>images/ref-shoulder-thorns.jpg</code>Full back piece</div>
-    </div>
-    <div class="ref-item" style="min-height:280px">
-      <img src="images/ref-leg-full-red-cord.jpg" alt="Leg piece side view" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph"><code>images/ref-leg-full-red-cord.jpg</code></div>
-    </div>
-    <div class="ref-item" style="min-height:280px">
-      <img src="images/ref-backpiece.jpg" alt="Leg piece rear view" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph"><code>images/ref-backpiece.jpg</code></div>
-    </div>
-    <div class="ref-item" style="min-height:280px">
-      <img src="images/ref-ribs-open-mouth.png" alt="Shoulder piece with thorns" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph"><code>images/ref-ribs-open-mouth.png</code>Shoulder/arm piece</div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ╔══════════════════════════════════════╗ -->
-<!--  CONTEXT: MY PREFERENCES               -->
-<!-- ╚══════════════════════════════════════╝ -->
-<section style="padding-bottom: 72px">
-  <p class="sec-label">Context</p>
-  <h2>Why the Design Looks the Way It Does</h2>
-  <p class="sec-intro" style="max-width: 760px; margin-bottom: 0">
-    Bayun's design already incorporated my specific preferences — so when you execute it,
-    knowing what I asked for helps you understand the <em>intentionality</em> behind every choice.
-    Nothing in this design is a default. These are the things I told Bayun I wanted:
-  </p>
-  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 48px">
-    <div style="background: var(--card); padding: 32px 36px">
-      <div class="dna-title" style="margin-bottom: 10px">Closed mouth</div>
-      <div class="dna-desc">No open jaw, no strike pose. The snake is calm, self-possessed — not threatening. The head is tucked and the mouth closed. This changes the entire energy of the piece.</div>
-    </div>
-    <div style="background: var(--card); padding: 32px 36px">
-      <div class="dna-title" style="margin-bottom: 10px">Anatomy-first composition</div>
-      <div class="dna-desc">The snake's loops should feel like they belong to the body — the waist, rear, and quad naturally frame the coils. The composition follows the body's contours rather than sitting on top of them.</div>
-    </div>
-    <div style="background: var(--card); padding: 32px 36px">
-      <div class="dna-title" style="margin-bottom: 10px">Infinity knot as centerpiece</div>
-      <div class="dna-desc">The figure-8 loop in the mid-lower section was specifically requested. It's not just a coil — it's a deliberate shape that carries meaning and creates one of the strongest visual anchors in the piece.</div>
-    </div>
-    <div style="background: var(--card); padding: 32px 36px">
-      <div class="dna-title" style="margin-bottom: 10px">Consistent upward flow</div>
-      <div class="dna-desc">The directional motion of the snake should be coherent — a consistent zig-zag moving upward, never chaotic or reversing on itself without reason. The elegance is in the controlled, intentional direction.</div>
-    </div>
-    <div style="background: var(--card); padding: 32px 36px; grid-column: 1 / -1">
-      <div class="dna-title" style="margin-bottom: 10px">Large negative ring space on the quad</div>
-      <div class="dna-desc">A big sweeping ring with open skin showing on the quad was something I specifically loved in Bayun's reference work and asked him to incorporate. That open negative space on the thigh is not leftover — it was requested.</div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ╔══════════════════════════════════════╗ -->
-<!--  02 — STYLE DNA                         -->
-<!-- ╚══════════════════════════════════════╝ -->
-<section>
-  <p class="sec-label">02 — Technical Language</p>
-  <h2>Bayun's Style DNA</h2>
-  <p class="sec-intro">
-    These aren't stylistic preferences — they're structural.
-    The elements that make a Bayun snake a Bayun snake.
-  </p>
-
-  <div class="dna-grid">
-    <div class="dna-card">
-      <div class="dna-num">01</div>
-      <div class="dna-title">Dual-Texture Scales</div>
-      <div class="dna-desc">
-        Two distinct scale treatments on the same snake.
-        The dorsal (top) body: large, clearly defined diamond or rhombus-shaped scales.
-        The ventral (belly) surface: tight horizontal parallel lines like compressed ribs.
-        This contrast gives the snake its 3D dimensionality and separates
-        the top of the body from the underside visually.
+    <div class="ref-grid" style="height: calc(100vh - 230px)">
+      <div class="ref-item r1">
+        <img src="images/ref-leg-red-cord.jpg" alt="Leg piece with red cord" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph">ref-leg-red-cord.jpg</div>
       </div>
-    </div>
-    <div class="dna-card">
-      <div class="dna-num">02</div>
-      <div class="dna-title">Deep Black Saturation</div>
-      <div class="dna-desc">
-        Shadow zones and coil folds go fully black — not grey, not softly shaded.
-        True ink saturation in the deepest areas, then fine linework everywhere else.
-        No muddy midtone range. The contrast is stark: deep black vs. precise fine lines.
-        Nothing in between.
+      <div class="ref-item r2">
+        <img src="images/ref-backpiece.jpg" alt="Back piece" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph">ref-backpiece.jpg</div>
       </div>
-    </div>
-    <div class="dna-card">
-      <div class="dna-num">03</div>
-      <div class="dna-title">Deliberate Negative Space</div>
-      <div class="dna-desc">
-        The skin showing through the coils isn't leftover — it's designed.
-        Large open loops create intentional voids that carry as much visual
-        weight as the snake itself. The negative space has shape.
-        Don't fill it.
+      <div class="ref-item">
+        <img src="images/ref-leg-full-red-cord.jpg" alt="Full leg composition" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph">ref-leg-full-red-cord.jpg</div>
       </div>
-    </div>
-    <div class="dna-card">
-      <div class="dna-num">04</div>
-      <div class="dna-title">Red Cord Accents</div>
-      <div class="dna-desc">
-        A signature in some pieces: fine red knotted rope threading around the snake.
-        Sparse — it doesn't dominate. The red is the only color in the entire piece;
-        everything else is black and grey. It appears in some of Bayun's work and not others.
-        It's a choice, not a rule.
-      </div>
-    </div>
-    <div class="dna-card">
-      <div class="dna-num">05</div>
-      <div class="dna-title">Wispy Motion Lines</div>
-      <div class="dna-desc">
-        Fine hair-like lines extend from the snake's head and tail, suggesting
-        movement through air. Three to five lines, curving organically.
-        They're sparse — never overdone. They make the snake feel alive rather
-        than static on the skin.
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ╔══════════════════════════════════════╗ -->
-<!--  02B — SHADING                          -->
-<!-- ╚══════════════════════════════════════╝ -->
-<section>
-  <p class="sec-label">02B — Shading</p>
-  <h2>How Bayun Shades</h2>
-  <p class="sec-intro">
-    The shading approach is as specific as the composition. These are the rules that give
-    Bayun's snakes their dimensional, almost sculpted quality.
-  </p>
-
-  <div class="dna-grid">
-    <div class="dna-card">
-      <div class="dna-num">A</div>
-      <div class="dna-title">Per-Scale Internal Gradient</div>
-      <div class="dna-desc">
-        Every individual dorsal scale has its own internal shading.
-        The darkest point is at the <strong style="color:var(--text); font-weight:400">bottom edge</strong> of each scale —
-        where it sits beneath the scale above it (cast shadow).
-        Moving up toward the free tip of the scale, it lightens.
-        This is repeated consistently across the entire body.
-        The result is a "roof tile" depth effect — each scale reads as a 3D object,
-        not just a drawn outline.
-      </div>
-    </div>
-    <div class="dna-card">
-      <div class="dna-num">B</div>
-      <div class="dna-title">Hard Body Shadow Cuts</div>
-      <div class="dna-desc">
-        The cylindrical body has a clear highlight zone and a shadow zone.
-        The shadow side doesn't fade gradually — it drops to
-        <strong style="color:var(--text); font-weight:400">deep black quickly</strong>,
-        with a relatively hard transition.
-        Where the body curves away from view, overlaps itself,
-        or tucks into a coil fold, it goes to full black saturation.
-        No long soft gradients. The contrast is bold and deliberate.
-      </div>
-    </div>
-    <div class="dna-card">
-      <div class="dna-num">C</div>
-      <div class="dna-title">Belly / Ventral Plates</div>
-      <div class="dna-desc">
-        The ventral (belly) surface uses tight horizontal bands — not scales,
-        but rib-like plates. Each band has its own shadow on the lower edge.
-        The belly is a clearly different texture from the dorsal body —
-        lighter overall, with fine line hatching rather than scale shapes.
-        The transition from dorsal scales to ventral plates
-        is a defined anatomical line.
-      </div>
-    </div>
-    <div class="dna-card">
-      <div class="dna-num">D</div>
-      <div class="dna-title">Head Anatomy</div>
-      <div class="dna-desc">
-        The head uses the same per-scale shading logic, but the scales are
-        larger and more individually prominent — each one more visible than
-        on the body. The eye is a simple, clean circle — small, with a dark
-        round pupil, no elaborate iris rendering. The forked tongue
-        (if present) is two ultra-fine lines — barely there, trailing into space.
-        No ornamentation on the face. Quiet and precise.
-      </div>
-    </div>
-    <div class="dna-card">
-      <div class="dna-num">E</div>
-      <div class="dna-title">No Soft Midtone Washes</div>
-      <div class="dna-desc">
-        There's no grey wash or soft airbrush midtone range in Bayun's work.
-        The tonal range is achieved entirely through line density and scale shading —
-        not through grey ink or soft blending.
-        The work is technically linear. Where it looks "grey" it's
-        fine lines and dot clusters, not a wash. This keeps the piece
-        crisp and prevents it from looking muddy as it ages.
-      </div>
-    </div>
-    <div class="dna-card">
-      <div class="dna-num">F</div>
-      <div class="dna-title">Coil Twist Shadow Logic</div>
-      <div class="dna-desc">
-        When the snake body bends into a loop or twist, the curve itself
-        generates the lighting — not an external light source.
-        <br><br>
-        The <strong style="color:var(--text); font-weight:400">inside of the curve</strong> (the tightest part of the bend)
-        drops to near-pure black — a hard, confident shadow shape.
-        The <strong style="color:var(--text); font-weight:400">apex of the curve</strong> (where the body faces outward)
-        is the lightest point, with scale texture fully visible.
-        The sides transition quickly from apex to shadow.
-        <br><br>
-        These inner-curve blacks become abstract shapes in their own right —
-        bold dark voids that add visual weight and drama to every coil.
-        The twist is the shading, not just a shape to shade.
+      <div class="ref-item">
+        <img src="images/ref-shoulder-thorns.jpg" alt="Shoulder piece" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph">ref-shoulder-thorns.jpg</div>
       </div>
     </div>
   </div>
 
-  <div style="margin-top: 8px; display:grid; grid-template-columns: 1fr 1fr; gap: 8px">
-    <div style="background: var(--card); border: 1px solid var(--border); padding: 36px">
-      <div class="dna-title" style="margin-bottom: 12px; color: var(--red)">Head Detail — View 1</div>
-      <div class="dna-desc" style="line-height:1.9; margin-bottom: 24px">
-        Per-scale gradient, hard body shadow cut, belly plate texture,
-        and head scale anatomy. This is the technical standard.
+  <!-- ════════════════════════════════ -->
+  <!--  4 — SHADING: SCALE DETAIL      -->
+  <!-- ════════════════════════════════ -->
+  <div class="slide">
+    <p class="label">02 — Shading · Scale Detail</p>
+    <h2>Per-Scale Gradient</h2>
+    <div class="shading-layout">
+      <div>
+        <p class="body">
+          Every individual dorsal scale has its own internal shading.
+          The <strong>darkest point is at the bottom edge</strong> of each scale —
+          where it sits beneath the scale above it (cast shadow from overlap).
+          Moving up toward the free tip, it lightens.
+          <br><br>
+          This is repeated consistently across the entire body.
+          The result is a <strong>"roof tile" depth effect</strong> — each scale reads as a 3D object,
+          not just a drawn outline. This is what gives Bayun's snakes their
+          dimensional, almost sculptural quality.
+          <br><br>
+          The belly (ventral) surface uses a completely different texture:
+          <strong>tight horizontal parallel bands</strong> — like compressed ribs — rather than scales.
+          Each band carries its own shadow on the lower edge.
+          The transition from dorsal scales to ventral plates is a defined anatomical line.
+        </p>
       </div>
-      <img src="images/head-1.png" alt="Bayun head close-up 1" style="width:100%; object-fit:contain" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph"><code>images/head-1.png</code>Close-up: scale + head shading</div>
-    </div>
-    <div style="background: var(--card); border: 1px solid var(--border); padding: 36px">
-      <div class="dna-title" style="margin-bottom: 12px; color: var(--red)">Head Detail — View 2</div>
-      <div class="dna-desc" style="line-height:1.9; margin-bottom: 24px">
-        A second head angle — shows the larger individual head scales,
-        the simple clean eye, and the overall calm anatomy of the face.
+      <div>
+        <img src="images/head-closeup-shoulder.png" class="slide-img" style="max-height: 55vh" alt="Head/scale close-up" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph" style="min-height:300px">head-closeup-shoulder.png</div>
+        <p class="img-caption">Per-scale gradient visible on dorsal body; belly plate transition on right</p>
       </div>
-      <img src="images/head-closeup-shoulder.png" alt="Bayun head close-up 2" style="width:100%; object-fit:contain" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph"><code>images/head-closeup-shoulder.png</code>Close-up: head view 2</div>
-    </div>
-    <div style="background: var(--card); border: 1px solid var(--border); padding: 36px; grid-column: 1 / -1">
-      <div class="dna-title" style="margin-bottom: 12px; color: var(--red)">Coil Twist Shadow</div>
-      <div class="dna-desc" style="line-height:1.9; margin-bottom: 24px">
-        The inside of the curve goes pure black. The apex is lightest.
-        The twist itself is the light source — not an external one.
-      </div>
-      <img src="images/coil-shading.png" alt="Coil twist shading" style="width:100%; max-height: 500px; object-fit:contain" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph" style="min-height:300px"><code>images/coil-shading.png</code>Close-up: coil twist shading</div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ╔══════════════════════════════════════╗ -->
-<!--  03 — WHAT TO PRESERVE                  -->
-<!-- ╚══════════════════════════════════════╝ -->
-<section>
-  <p class="sec-label">03 — The Design</p>
-  <h2>What to Preserve</h2>
-  <p class="sec-intro">
-    Every compositional choice Bayun made for this piece is intentional.
-    Here's what each one is and why it matters.
-  </p>
-
-  <!-- Principle 1: Silhouette -->
-  <div class="principle">
-    <div class="p-text">
-      <p class="p-tag">Composition</p>
-      <h3>The Tapered Diamond Silhouette</h3>
-      <p class="p-body">
-        The entire piece fits inside an elongated diamond shape — wide at the top
-        where the leg is widest (hip and quad), narrowing to a point at the ankle.
-        This mirrors the natural reverse taper of the leg itself.
-        The silhouette of the composition and the silhouette of the body become the same shape.
-        The piece belongs to the leg rather than sitting on top of it.
-      </p>
-    </div>
-    <div class="p-img" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; align-items:start">
-      <img src="images/annotated-silhouette-diamond.jpg" alt="Diamond silhouette arrows" style="width:100%; object-fit:contain" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph" style="min-height:300px">Diamond silhouette arrows</div>
-      <img src="images/annotated-taper-width.jpg" alt="Width grows with leg taper" style="width:100%; object-fit:contain" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph" style="min-height:300px">Width grows with leg taper</div>
     </div>
   </div>
 
-  <!-- Principle 2: Triangle + Head -->
-  <div class="principle flip">
-    <div class="p-text">
-      <p class="p-tag">Geometry</p>
-      <h3>Triangle in the Upper Section</h3>
-      <p class="p-body">
-        The upper portion of the design — the coils near the hip — forms a secondary triangle.
-        Inside it, the snake's head is positioned to follow the natural diagonal of the oblique
-        muscles. The head direction isn't arbitrary: it's aligned with the body beneath it.
-        The piece reads as anatomically intentional, not placed.
-        <br><br>
-        The triangle formed by the infinity knot and the neck area is another secondary shape
-        worth noting — there's interesting geometry throughout.
-      </p>
-    </div>
-    <div class="p-img">
-      <img src="images/annotated-triangle-infinity.jpg" alt="Triangle framing and head direction" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph"><code>images/annotated-triangle-infinity.jpg</code>Triangle + head direction diagram</div>
+  <!-- ════════════════════════════════ -->
+  <!--  5 — SHADING: BODY SHADOW       -->
+  <!-- ════════════════════════════════ -->
+  <div class="slide">
+    <p class="label">02 — Shading · Body Shadow</p>
+    <h2>Hard Shadow Cuts</h2>
+    <div class="shading-layout">
+      <div>
+        <img src="images/ref-leg-red-cord.jpg" class="slide-img" style="max-height: 55vh" alt="Body shadow reference" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph" style="min-height:300px">ref-leg-red-cord.jpg</div>
+        <p class="img-caption">Deep black in coil folds and shadow sides — note the hard cut, not a gradual fade</p>
+      </div>
+      <div>
+        <p class="body">
+          The cylindrical snake body has a highlight zone and a shadow zone.
+          The shadow side <strong>drops to deep black quickly</strong> — not a long soft gradient.
+          A relatively hard edge where the shadow begins.
+          <br><br>
+          Where the body curves away from view, overlaps itself, or tucks
+          into a coil fold, it goes to <strong>full black saturation</strong>.
+          No muddy midtones. No soft airbrush blend.
+          <br><br>
+          The tonal range is achieved entirely through <strong>line density and scale shading</strong> —
+          not grey ink or soft blending. Where it reads as "grey," it's fine lines
+          and dot clusters. This is what keeps the piece crisp and readable as it ages.
+          <br><br>
+          The contrast is stark and intentional: deep black vs. precise fine lines. Nothing in between.
+        </p>
+      </div>
     </div>
   </div>
 
-  <!-- Principle 3: Möbius -->
-  <div class="principle">
-    <div class="p-text">
-      <p class="p-tag">Motion</p>
-      <h3>The Möbius Effect</h3>
-      <p class="p-body">
-        The snake's head overlaps its own body. This is a specific, deliberate choice:
-        it creates a Möbius strip or infinite loop quality. Follow the snake's motion
-        and you never find a beginning or end — the flow is continuous.
-        It makes the piece feel alive in a way a snake with a clear start and end doesn't.
-        <br><br>
-        <strong>Note:</strong> My piece has a closed mouth. No open jaw, no menacing expression.
-        The head is calm and tucked — this is not a strike pose.
-      </p>
-    </div>
-    <div class="p-img">
-      <img src="images/annotated-mobius.jpg" alt="Möbius loop / infinite motion" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph"><code>images/annotated-mobius.jpg</code>Möbius / infinite loop diagram</div>
+  <!-- ════════════════════════════════ -->
+  <!--  6 — SHADING: COIL TWIST        -->
+  <!-- ════════════════════════════════ -->
+  <div class="slide">
+    <p class="label">02 — Shading · Coil Logic</p>
+    <h2>The Coil Twist Shadow</h2>
+    <div class="shading-layout">
+      <div>
+        <p class="body">
+          When the snake body bends into a loop or twist, the curve itself generates the lighting —
+          not an external light source.
+          <br><br>
+          The <strong>inside of the curve</strong> (the tightest part of the bend) drops
+          to near-pure black — a hard, confident shadow shape.
+          The <strong>apex of the curve</strong> (where the body faces outward)
+          is the lightest point, with scale texture fully visible.
+          The sides transition quickly from apex to shadow.
+          <br><br>
+          These inner-curve blacks become <strong>abstract shapes in their own right</strong> —
+          bold dark voids that add visual weight and drama to every coil.
+          They're not just shadows — they're compositional elements.
+          <br><br>
+          The twist is the shading. The bend tells you where the dark goes.
+        </p>
+      </div>
+      <div>
+        <img src="images/coil-shading.png" class="slide-img" style="max-height:55vh" alt="Coil twist shadow" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph" style="min-height:300px">coil-shading.png</div>
+        <p class="img-caption">Arrows pointing to the inner-curve black and apex light zones on the same coil</p>
+      </div>
     </div>
   </div>
 
-  <!-- Principle 4: Infinity knot -->
-  <div class="principle flip">
-    <div class="p-text">
-      <p class="p-tag">Structure</p>
-      <h3>Infinity Knot + Negative Ring Space</h3>
-      <p class="p-body">
-        The lower-mid section contains a clear figure-8 infinity knot —
-        this is a designed shape, not just a coil. It's a centerpiece of the composition.
-        <br><br>
-        Throughout the piece, large ring shapes create open negative space voids.
-        These aren't gaps — they're designed shapes. The circles of skin inside the coils
-        are compositionally intentional. The top of the snake also curls back on itself
-        as it ascends toward the ribs, adding another layer of looping self-referential energy.
-      </p>
-    </div>
-    <div class="p-img" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; align-items:start">
-      <img src="images/design.jpg" alt="Design — infinity knot visible" style="width:100%; object-fit:contain" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph" style="min-height:300px">Design — infinity knot</div>
-      <img src="images/annotated-negative-space.jpg" alt="Rich variety of negative spaces" style="width:100%; object-fit:contain" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph" style="min-height:300px">Negative space variety</div>
+  <!-- ════════════════════════════════ -->
+  <!--  7 — SHADING: HEAD              -->
+  <!-- ════════════════════════════════ -->
+  <div class="slide">
+    <p class="label">02 — Shading · Head</p>
+    <h2>Head Anatomy</h2>
+    <div class="three-col">
+      <div>
+        <p class="body">
+          The head uses the same per-scale shading logic as the body, but the scales are
+          <strong>larger and more individually prominent</strong> — each one more visible.
+          <br><br>
+          <strong>Eye:</strong> a simple, clean circle — small, round dark pupil,
+          no elaborate iris rendering. Quiet.
+          <br><br>
+          <strong>Important: closed mouth.</strong> No open jaw for this piece.
+          The snake is calm — not a strike pose.
+          This is one of the biggest departures from Bayun's other work (shown right).
+          The energy should be powerful and self-contained, not aggressive.
+          <br><br>
+          If a tongue is present: two ultra-fine lines, trailing softly.
+          Almost not there.
+        </p>
+      </div>
+      <div>
+        <img src="images/head-closeup-shoulder.png" class="slide-img" style="max-height:48vh" alt="Head close-up" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph" style="min-height:240px">head-closeup-shoulder.png</div>
+        <p class="img-caption">Head scale detail — large individual scales, calm expression</p>
+      </div>
+      <div>
+        <img src="images/head-open-mouth-ref.png" class="slide-img" style="max-height:48vh" alt="Open mouth contrast" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph" style="min-height:240px">head-open-mouth-ref.png</div>
+        <p class="img-caption" style="color: var(--red)">NOT this — open mouth is Bayun's default; my piece is closed</p>
+      </div>
     </div>
   </div>
 
-  <!-- Principle 5: Directional Flow -->
-  <div class="principle" style="grid-template-columns: 1fr; gap: 40px; border-bottom: none">
-    <div class="p-text">
-      <p class="p-tag">Flow</p>
-      <h3>Consistent Directional Zig-Zag</h3>
-      <p class="p-body" style="max-width: 680px">
-        The snake's overall motion follows a consistent upward zig-zag — not random, not chaotic.
-        The zig-zag size increases proportionally as the leg gets wider going up.
-        At the top, the composition shifts to going straight up to align with
-        the transition from leg to hip.
-        <br><br>
-        Breathing room is maintained at the front edge — the snake never crowds the border.
-        The comparison below shows coherent directional flow (left) versus
-        directionless chaos (right). The left is the goal.
-      </p>
-    </div>
-    <div class="comparison-wrap">
-      <img src="images/comparison.png" alt="Good vs bad directional flow" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="img-ph" style="min-height: 420px"><code>images/comparison.png</code>Good vs bad directional flow — side-by-side comparison</div>
-    </div>
-  </div>
-
-</section>
-
-<div class="divider"></div>
-
-<!-- ╔══════════════════════════════════════╗ -->
-<!--  04 — CHECKLIST                         -->
-<!-- ╚══════════════════════════════════════╝ -->
-<section>
-  <p class="sec-label">04 — The Brief</p>
-  <h2>Bobby's Checklist</h2>
-  <p class="sec-intro">
-    Everything that carries over from Bayun's design.
-  </p>
-
-  <div class="checklist">
-    <div>
-      <div class="check">
-        <div class="checkbox"></div>
-        <div class="check-label">
-          Closed mouth, calm head
-          <span class="check-sub">No open jaw — the snake is peaceful, not a strike pose</span>
-        </div>
+  <!-- ════════════════════════════════ -->
+  <!--  8 — COMPOSITION: SILHOUETTE    -->
+  <!-- ════════════════════════════════ -->
+  <div class="slide">
+    <p class="label">03 — Composition · Silhouette</p>
+    <h2>The Tapered Diamond Silhouette</h2>
+    <div class="shading-layout">
+      <div>
+        <p class="body">
+          The overall bounding shape of the piece is an elongated diamond —
+          wide at the top where the leg is widest (hip/quad),
+          narrowing to a point at the ankle.
+          <br><br>
+          This mirrors the natural reverse taper of the leg itself.
+          <strong>The silhouette of the composition and the silhouette of the body become the same shape.</strong>
+          The piece belongs to the leg rather than sitting on top of it.
+          <br><br>
+          The width of the coil spread grows proportionally as the leg gets wider going up —
+          this is what Bayun got right and what Bobby needs to preserve.
+        </p>
       </div>
-      <div class="check">
-        <div class="checkbox"></div>
-        <div class="check-label">
-          Tapered diamond overall silhouette
-          <span class="check-sub">Wide at hip/quad, narrowing to a point at the ankle — mirrors the leg</span>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px">
+        <div>
+          <img src="images/annotated-silhouette-diamond.jpg" class="slide-img" style="max-height:48vh" alt="Diamond silhouette" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="img-ph" style="min-height:200px">annotated-silhouette-diamond.jpg</div>
         </div>
-      </div>
-      <div class="check">
-        <div class="checkbox"></div>
-        <div class="check-label">
-          Triangle framing in the upper section
-          <span class="check-sub">Upper coils form a triangle; head direction aligns with the oblique muscle line</span>
-        </div>
-      </div>
-      <div class="check">
-        <div class="checkbox"></div>
-        <div class="check-label">
-          Head overlaps its own body
-          <span class="check-sub">Möbius effect — the motion never starts or ends</span>
-        </div>
-      </div>
-      <div class="check">
-        <div class="checkbox"></div>
-        <div class="check-label">
-          Clear infinity knot in lower/mid composition
-          <span class="check-sub">A deliberate figure-8 shape — not just a coil</span>
-        </div>
-      </div>
-      <div class="check">
-        <div class="checkbox"></div>
-        <div class="check-label">
-          Large negative ring spaces preserved
-          <span class="check-sub">Open coil voids are designed shapes — don't fill them</span>
-        </div>
-      </div>
-      <div class="check">
-        <div class="checkbox"></div>
-        <div class="check-label">
-          Top section curls back on itself
-          <span class="check-sub">As the snake ascends toward the ribs, it folds back — continuous looping energy</span>
-        </div>
-      </div>
-    </div>
-    <div>
-      <div class="check">
-        <div class="checkbox"></div>
-        <div class="check-label">
-          Consistent upward zig-zag directional flow
-          <span class="check-sub">Overall motion is coherent and directed — not chaotic or reversing</span>
-        </div>
-      </div>
-      <div class="check">
-        <div class="checkbox"></div>
-        <div class="check-label">
-          Zig-zag scale increases with leg width
-          <span class="check-sub">Loops get proportionally wider as the leg widens going up</span>
-        </div>
-      </div>
-      <div class="check">
-        <div class="checkbox"></div>
-        <div class="check-label">
-          Breathing room at the front edge
-          <span class="check-sub">Negative space at the compositional border — snake doesn't crowd the boundary</span>
-        </div>
-      </div>
-      <div class="check">
-        <div class="checkbox"></div>
-        <div class="check-label">
-          Body follows body contours naturally
-          <span class="check-sub">Loops at waist, rear, and quad look like they belong — not placed on top</span>
-        </div>
-      </div>
-      <div class="check">
-        <div class="checkbox"></div>
-        <div class="check-label">
-          Dual-texture scales
-          <span class="check-sub">Diamond/rhombus scales dorsal; tight horizontal parallel lines ventral (belly)</span>
-        </div>
-      </div>
-      <div class="check">
-        <div class="checkbox"></div>
-        <div class="check-label">
-          Deep black in shadows and folds
-          <span class="check-sub">Fully saturated black in coil folds — no soft grey washes</span>
-        </div>
-      </div>
-      <div class="check">
-        <div class="checkbox"></div>
-        <div class="check-label">
-          Wispy motion lines from head and tail
-          <span class="check-sub">3–5 fine curving lines suggesting motion — sparse, not overdone</span>
+        <div>
+          <img src="images/annotated-taper-width.jpg" class="slide-img" style="max-height:48vh" alt="Taper width" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="img-ph" style="min-height:200px">annotated-taper-width.jpg</div>
         </div>
       </div>
     </div>
   </div>
-</section>
 
-<footer>
-  <span>Design by <a href="https://www.instagram.com/bayun.tattoos" target="_blank">@bayun.tattoos</a></span>
-  <span>Brief prepared for Bobby</span>
-</footer>
+  <!-- ════════════════════════════════ -->
+  <!--  9 — COMPOSITION: TRIANGLE      -->
+  <!-- ════════════════════════════════ -->
+  <div class="slide">
+    <p class="label">03 — Composition · Geometry</p>
+    <h2>Triangle + Head Direction</h2>
+    <div class="shading-layout">
+      <div>
+        <img src="images/annotated-triangle-infinity.jpg" class="slide-img" style="max-height:55vh" alt="Triangle and head" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph" style="min-height:300px">annotated-triangle-infinity.jpg</div>
+      </div>
+      <div>
+        <p class="body">
+          The upper coils near the hip form a secondary triangle shape.
+          Inside it, the snake's head is positioned to follow the
+          <strong>natural diagonal of the oblique muscles</strong>.
+          The head direction isn't arbitrary — it's anatomically intentional.
+          <br><br>
+          There's also a secondary triangle formed by the infinity knot and the neck area —
+          interesting geometry that creates visual rhythm across the piece.
+          <br><br>
+          The piece reads as placed by the body, not placed on it.
+        </p>
+      </div>
+    </div>
+  </div>
 
+  <!-- ════════════════════════════════ -->
+  <!--  10 — COMPOSITION: MÖBIUS       -->
+  <!-- ════════════════════════════════ -->
+  <div class="slide">
+    <p class="label">03 — Composition · Motion</p>
+    <h2>The Möbius Effect</h2>
+    <div class="shading-layout">
+      <div>
+        <p class="body">
+          The snake's head overlaps its own body. This is a specific, intelligent choice.
+          It creates a <strong>Möbius strip or infinite loop quality</strong> —
+          follow the snake's motion and you never find a beginning or end.
+          The flow is continuous.
+          <br><br>
+          It makes the piece feel alive in a way that a snake with a clear
+          start and end point doesn't. The eye keeps moving.
+          <br><br>
+          Combined with the top of the snake <strong>curling back on itself</strong>
+          as it rises toward the ribs — the whole piece has a self-referential,
+          looping energy that never resolves. That's the intention.
+        </p>
+      </div>
+      <div>
+        <img src="images/annotated-mobius.jpg" class="slide-img" style="max-height:55vh" alt="Möbius effect" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph" style="min-height:300px">annotated-mobius.jpg</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!--  11 — COMPOSITION: NEG SPACE    -->
+  <!-- ════════════════════════════════ -->
+  <div class="slide">
+    <p class="label">03 — Composition · Negative Space</p>
+    <h2>Infinity Knot + Negative Ring Space</h2>
+    <div class="shading-layout">
+      <div>
+        <img src="images/annotated-negative-space.jpg" class="slide-img" style="max-height:55vh" alt="Negative space" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph" style="min-height:300px">annotated-negative-space.jpg</div>
+        <p class="img-caption">A rich variety of negative space sizes — each one designed, not incidental</p>
+      </div>
+      <div>
+        <p class="body">
+          The lower-mid section contains a clear <strong>figure-8 infinity knot</strong> —
+          a designed shape, not just a coil. It's a visual and conceptual anchor of the piece.
+          <br><br>
+          Throughout the piece, large ring shapes create open negative space voids.
+          <strong>These are designed shapes — as intentional as the snake itself.</strong>
+          The circles of skin inside the coils carry visual weight.
+          A rich variety of negative space sizes creates contrast and interest across the composition.
+          <br><br>
+          The big sweeping ring on the quad was specifically requested —
+          that open skin is not leftover space.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!--  12 — COMPOSITION: FLOW         -->
+  <!-- ════════════════════════════════ -->
+  <div class="slide">
+    <p class="label">03 — Composition · Flow</p>
+    <h2>Consistent Directional Zig-Zag</h2>
+    <div class="shading-layout">
+      <div>
+        <p class="body">
+          The snake's overall motion follows a <strong>consistent upward zig-zag</strong> —
+          not random, not chaotic. The zig-zag size increases proportionally
+          as the leg gets wider going up.
+          At the top, the composition goes straight up to align with
+          the hip transition.
+          <br><br>
+          <strong>Breathing room is maintained at the front edge</strong> —
+          the snake never crowds the boundary. This keeps it from feeling forced.
+          <br><br>
+          The comparison image (right) shows coherent directional flow on the left side
+          vs. directionless chaos on the right side. The left is always the goal.
+        </p>
+      </div>
+      <div>
+        <img src="images/comparison.png" class="slide-img" style="max-height:55vh" alt="Flow comparison" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-ph" style="min-height:300px">comparison.png — good vs bad directional flow</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!--  13 — CHECKLIST                 -->
+  <!-- ════════════════════════════════ -->
+  <div class="slide">
+    <p class="label">The Brief</p>
+    <h2 style="margin-bottom:20px">Bobby's Checklist</h2>
+    <div class="checklist">
+      <div>
+        <div class="check">
+          <div class="checkbox"></div>
+          <div class="check-label">Per-scale gradient shading
+            <span class="check-sub">Dark at base of each scale, light at free edge — every scale individually</span>
+          </div>
+        </div>
+        <div class="check">
+          <div class="checkbox"></div>
+          <div class="check-label">Hard body shadow cuts
+            <span class="check-sub">Shadow side goes deep black quickly — no soft grey washes</span>
+          </div>
+        </div>
+        <div class="check">
+          <div class="checkbox"></div>
+          <div class="check-label">Coil twist shadow logic
+            <span class="check-sub">Inside of curve = black; apex = light. The bend is the light source.</span>
+          </div>
+        </div>
+        <div class="check">
+          <div class="checkbox"></div>
+          <div class="check-label">Dual-texture scales
+            <span class="check-sub">Diamond dorsal scales; horizontal parallel lines on belly (ventral)</span>
+          </div>
+        </div>
+        <div class="check">
+          <div class="checkbox"></div>
+          <div class="check-label">Closed mouth, calm head
+            <span class="check-sub">No open jaw — peaceful, powerful, self-contained</span>
+          </div>
+        </div>
+        <div class="check">
+          <div class="checkbox"></div>
+          <div class="check-label">Head overlaps its own body
+            <span class="check-sub">Möbius effect — continuous motion, no start or end</span>
+          </div>
+        </div>
+        <div class="check">
+          <div class="checkbox"></div>
+          <div class="check-label">Wispy motion lines from head/tail
+            <span class="check-sub">3–5 fine curving lines — sparse, never overdone</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="check">
+          <div class="checkbox"></div>
+          <div class="check-label">Tapered diamond overall silhouette
+            <span class="check-sub">Wide at hip, point at ankle — mirrors the leg</span>
+          </div>
+        </div>
+        <div class="check">
+          <div class="checkbox"></div>
+          <div class="check-label">Triangle framing in upper section
+            <span class="check-sub">Upper coils form a triangle; head follows oblique muscle line</span>
+          </div>
+        </div>
+        <div class="check">
+          <div class="checkbox"></div>
+          <div class="check-label">Clear infinity knot in lower/mid
+            <span class="check-sub">Deliberate figure-8 shape — not just a coil</span>
+          </div>
+        </div>
+        <div class="check">
+          <div class="checkbox"></div>
+          <div class="check-label">Large negative ring spaces preserved
+            <span class="check-sub">Open coil voids are designed — don't fill them</span>
+          </div>
+        </div>
+        <div class="check">
+          <div class="checkbox"></div>
+          <div class="check-label">Consistent upward zig-zag flow
+            <span class="check-sub">Coherent directed motion — never chaotic</span>
+          </div>
+        </div>
+        <div class="check">
+          <div class="checkbox"></div>
+          <div class="check-label">Zig-zag scales with leg width
+            <span class="check-sub">Loops get proportionally wider going up</span>
+          </div>
+        </div>
+        <div class="check">
+          <div class="checkbox"></div>
+          <div class="check-label">Body loops follow body contours
+            <span class="check-sub">Waist, rear, quad — looks like it belongs, not placed on top</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <button class="nav-btn" id="prev" aria-label="Previous">←</button>
+  <div class="nav-center">
+    <div class="dots" id="dots"></div>
+    <div class="counter" id="counter"></div>
+  </div>
+  <button class="nav-btn" id="next" aria-label="Next">→</button>
+</nav>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dotsEl = document.getElementById('dots');
+  const counter = document.getElementById('counter');
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const total = slides.length;
+  let cur = 0;
+
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    dotsEl.children[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(n, total - 1));
+    slides[cur].classList.add('active');
+    slides[cur].scrollTop = 0;
+    dotsEl.children[cur].classList.add('active');
+    counter.textContent = (cur + 1) + ' / ' + total;
+    prev.disabled = cur === 0;
+    next.disabled = cur === total - 1;
+  }
+
+  prev.addEventListener('click', () => goTo(cur - 1));
+  next.addEventListener('click', () => goTo(cur + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(cur + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(cur - 1);
+  });
+
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) dx < 0 ? goTo(cur + 1) : goTo(cur - 1);
+  });
+
+  goTo(0);
+</script>
 </body>
 </html>
