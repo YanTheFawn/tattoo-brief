@@ -194,6 +194,55 @@
 
     .card-body { font-size: 0.85rem; color: var(--muted); line-height: 1.75; }
 
+    /* ── INNER CAROUSEL ── */
+    .inner-carousel {
+      position: relative;
+      height: calc(100vh - 210px);
+      overflow: hidden;
+    }
+    .inner-carousel-track { height: 100%; }
+    .inner-slide {
+      display: none;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+    }
+    .inner-slide.active { display: flex; }
+    .inner-slide img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    .inner-prev, .inner-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.55);
+      border: 1px solid #333;
+      color: #fff;
+      font-size: 1.4rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .inner-prev:hover, .inner-next:hover { background: rgba(0,0,0,0.85); }
+    .inner-prev { left: 14px; }
+    .inner-next { right: 14px; }
+    .inner-counter {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
     /* ── IMAGES ── */
     .img-ph {
       background: var(--card);
@@ -352,23 +401,32 @@
     <p class="body" style="max-width:580px">
       This is what Bayun does. This is the visual language and technical standard Bobby needs to work in.
     </p>
-    <div style="display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:6px; height:calc(100vh - 200px)">
-      <div class="ref-item">
-        <img src="images/ref-leg-red-cord.jpg" alt="Leg piece with red cord" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="img-ph">ref-leg-red-cord.jpg</div>
+    <div class="inner-carousel" id="ref-carousel">
+      <div class="inner-carousel-track">
+        <div class="inner-slide active">
+          <img src="images/ref-leg-red-cord.jpg" alt="Leg piece with red cord" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="img-ph">ref-leg-red-cord.jpg</div>
+        </div>
+        <div class="inner-slide">
+          <img src="images/ref-backpiece.jpg" alt="Back piece" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="img-ph">ref-backpiece.jpg</div>
+        </div>
+        <div class="inner-slide">
+          <img src="images/ref-leg-full-red-cord.jpg" alt="Full leg composition" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="img-ph">ref-leg-full-red-cord.jpg</div>
+        </div>
+        <div class="inner-slide">
+          <img src="images/ref-shoulder-thorns.jpg" alt="Shoulder thorns piece" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="img-ph">ref-shoulder-thorns.jpg</div>
+        </div>
+        <div class="inner-slide">
+          <img src="images/ref-ribs-open-mouth.png" alt="Ribs open mouth piece" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="img-ph">ref-ribs-open-mouth.png</div>
+        </div>
       </div>
-      <div class="ref-item">
-        <img src="images/ref-backpiece.jpg" alt="Back piece" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="img-ph">ref-backpiece.jpg</div>
-      </div>
-      <div class="ref-item">
-        <img src="images/ref-leg-full-red-cord.jpg" alt="Full leg composition" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="img-ph">ref-leg-full-red-cord.jpg</div>
-      </div>
-      <div class="ref-item">
-        <img src="images/ref-shoulder-thorns.jpg" alt="Shoulder piece" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="img-ph">ref-shoulder-thorns.jpg</div>
-      </div>
+      <button class="inner-prev" onclick="innerNav('ref-carousel',-1);event.stopPropagation()">&#8592;</button>
+      <button class="inner-next" onclick="innerNav('ref-carousel', 1);event.stopPropagation()">&#8594;</button>
+      <div class="inner-counter" id="ref-carousel-counter">1 / 5</div>
     </div>
   </div>
 
@@ -835,6 +893,17 @@
     const dx = e.changedTouches[0].clientX - tx;
     if (Math.abs(dx) > 50) dx < 0 ? goTo(cur + 1) : goTo(cur - 1);
   });
+
+  function innerNav(id, dir) {
+    const el = document.getElementById(id);
+    const items = el.querySelectorAll('.inner-slide');
+    let c = [...items].findIndex(x => x.classList.contains('active'));
+    items[c].classList.remove('active');
+    c = Math.max(0, Math.min(c + dir, items.length - 1));
+    items[c].classList.add('active');
+    const counter = document.getElementById(id + '-counter');
+    if (counter) counter.textContent = (c + 1) + ' / ' + items.length;
+  }
 
   goTo(0);
 </script>
