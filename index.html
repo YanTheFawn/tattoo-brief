@@ -194,6 +194,60 @@
 
     .card-body { font-size: 0.85rem; color: var(--muted); line-height: 1.75; }
 
+    /* ── DETAIL SLIDE (image hero) ── */
+    .detail-slide {
+      display: flex;
+      flex-direction: column;
+    }
+    .detail-image {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      padding: 8px 0;
+    }
+    .detail-image img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    .detail-cap {
+      flex: 0 0 auto;
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+      padding: 10px 100px 0;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .detail-cap.red { color: var(--red); }
+    .detail-slide .inner-carousel {
+      flex: 1;
+      min-height: 0;
+      height: auto;
+    }
+    .ko { display: none; }
+    body.korean .en { display: none; }
+    body.korean .ko { display: inline; }
+    #lang-toggle {
+      position: fixed;
+      top: 18px;
+      right: 160px;
+      z-index: 100;
+      background: transparent;
+      border: 1px solid #333;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    #lang-toggle:hover { border-color: var(--red); color: var(--red); }
+
     /* ── INNER CAROUSEL ── */
     .inner-carousel {
       position: relative;
@@ -204,15 +258,26 @@
     .inner-slide {
       display: none;
       height: 100%;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
     }
     .inner-slide.active { display: flex; }
     .inner-slide img {
-      max-height: 100%;
+      flex: 1;
+      min-height: 0;
       max-width: 100%;
       object-fit: contain;
     }
+    .inner-cap {
+      flex: 0 0 auto;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--muted);
+      padding: 8px 80px 32px;
+      line-height: 1.55;
+    }
+    .inner-cap.red { color: var(--red); }
     .inner-prev, .inner-next {
       position: absolute;
       top: 50%;
@@ -431,314 +496,181 @@
   </div>
 
   <!-- ════════════════════════════════ -->
-  <!--  4 — SHADING: DORSAL SCALES     -->
+  <!--  4 — SHADING: SCALE             -->
   <!-- ════════════════════════════════ -->
-  <div class="slide">
-    <p class="label">02 — Shading · Dorsal Scales</p>
-    <h2>Per-Scale Gradient</h2>
-    <div class="shading-layout">
-      <div>
-        <p class="body">
-          Every individual dorsal scale has its own internal shading.
-          The <strong>darkest point is at the bottom edge</strong> of each scale —
-          where it sits beneath the scale above it, receiving its cast shadow.
-          Moving up toward the free tip of the scale, it lightens.
-          <br><br>
-          This is repeated consistently across the entire body.
-          The result is a <strong>"roof tile" depth effect</strong> — each scale reads as a
-          3D object, not just a drawn outline.
-          <br><br>
-          This is the core technique that gives Bayun's snakes their dimensional,
-          almost sculptural quality. It's the difference between a snake that looks
-          drawn and one that looks like it has actual mass.
-        </p>
-      </div>
-      <div>
-        <img src="images/head-closeup-shoulder.png" class="slide-img" style="max-height:58vh" alt="Dorsal scale detail" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="img-ph" style="min-height:300px">head-closeup-shoulder.png</div>
-        <p class="img-caption">Each dorsal scale individually shaded — dark at base, light at tip</p>
-      </div>
+  <div class="slide detail-slide">
+    <p class="label">02 — Shading · Scales</p>
+    <h2><span class="en">Scale Shading</span><span class="ko">비늘 음영</span></h2>
+    <div class="detail-image">
+      <img src="images/head-closeup-shoulder.png" alt="Scale shading detail" onerror="this.style.display='none'">
     </div>
+    <p class="detail-cap">
+      <span class="en">Every single scale on the back has its own shadow inside it. The bottom edge of each scale is the darkest — the scale above it blocks the light there. The tip of each scale is lighter. This is repeated across the whole body. It is what makes the snake look 3D, not flat.</span>
+      <span class="ko">등의 모든 비늘 하나하나에 개별적인 음영이 있습니다. 각 비늘의 아랫부분이 가장 어둡고 — 위의 비늘이 그 부분의 빛을 가립니다. 비늘의 끝부분은 더 밝습니다. 이것이 뱀을 평면이 아닌 입체감 있게 보이게 합니다.</span>
+    </p>
   </div>
 
   <!-- ════════════════════════════════ -->
-  <!--  5 — SHADING: BELLY PLATES      -->
+  <!--  5 — SHADING: BELLY             -->
   <!-- ════════════════════════════════ -->
-  <div class="slide">
+  <div class="slide detail-slide">
     <p class="label">02 — Shading · Belly</p>
-    <h2>Ventral Plates</h2>
-    <div class="shading-layout">
-      <div>
-        <img src="images/ref-shoulder-thorns.jpg" class="slide-img" style="max-height:58vh" alt="Belly plates visible" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="img-ph" style="min-height:300px">ref-shoulder-thorns.jpg</div>
-        <p class="img-caption">Ventral plates visible along the underside — distinct from the dorsal scale texture</p>
-      </div>
-      <div>
-        <p class="body">
-          The belly (ventral) surface is a completely different texture from the dorsal body.
-          Instead of diamond scales, it uses <strong>tight horizontal parallel bands</strong> —
-          like compressed ribs — running across the underside of the snake.
-          <br><br>
-          Each band carries its own shadow on the <strong>lower edge</strong>.
-          The overall belly reads as lighter than the dorsal body — more open,
-          with fine line hatching rather than defined scale shapes.
-          <br><br>
-          The transition from dorsal scales to ventral plates is a
-          <strong>defined anatomical line</strong> — a clear edge where one texture ends
-          and the other begins. It runs along the side of the body and is part of
-          what makes the snake read as a real anatomical object.
-        </p>
-      </div>
+    <h2><span class="en">Belly Texture</span><span class="ko">배 질감</span></h2>
+    <div class="detail-image">
+      <img src="images/ref-shoulder-thorns.jpg" alt="Belly texture" onerror="this.style.display='none'">
     </div>
+    <p class="detail-cap">
+      <span class="en">The belly is a different texture from the back. The back has diamond scales. The belly has horizontal parallel bands — like flat stacked ribs. There is a clear dividing line between the back and belly. Each belly band has its own shadow at the bottom edge.</span>
+      <span class="ko">배는 등과 다른 질감입니다. 등은 다이아몬드 비늘이고, 배는 수평으로 평행한 밴드 — 납작하게 쌓인 갈비뼈처럼 보입니다. 등 비늘과 배 밴드 사이에는 명확한 경계선이 있습니다. 각 배 밴드의 아랫부분에도 음영이 있습니다.</span>
+    </p>
   </div>
 
   <!-- ════════════════════════════════ -->
   <!--  6 — SHADING: BODY SHADOW       -->
   <!-- ════════════════════════════════ -->
-  <div class="slide">
+  <div class="slide detail-slide">
     <p class="label">02 — Shading · Body Shadow</p>
-    <h2>Hard Shadow Cuts</h2>
-    <div class="shading-layout">
-      <div>
-        <p class="body">
-          The cylindrical snake body has a clear highlight zone and a shadow zone.
-          The shadow side <strong>drops to deep black quickly</strong> —
-          not a long soft gradient. A hard edge where the shadow begins.
-          <br><br>
-          Where the body curves away from view, overlaps itself, or tucks
-          into a coil fold, it goes to <strong>full black saturation</strong>.
-          No muddy midtones. No soft airbrush blending.
-          <br><br>
-          The tonal range is achieved entirely through <strong>line density and
-          scale shading</strong> — not grey ink. Where it reads as "grey," it's
-          fine lines and clusters. This is what keeps the piece
-          crisp and readable as it ages.
-        </p>
-      </div>
-      <div>
-        <img src="images/ref-leg-red-cord.jpg" class="slide-img" style="max-height:58vh" alt="Body shadow" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="img-ph" style="min-height:300px">ref-leg-red-cord.jpg</div>
-        <p class="img-caption">Deep black in coil folds and shadow sides — hard cut, not a gradual fade</p>
-      </div>
+    <h2><span class="en">Body Shadow</span><span class="ko">몸통 음영</span></h2>
+    <div class="detail-image">
+      <img src="images/ref-leg-red-cord.jpg" alt="Body shadow" onerror="this.style.display='none'">
     </div>
+    <p class="detail-cap">
+      <span class="en">Where the body curves away from view, or one section passes under another, it goes to solid black. Not a soft gradient — a hard edge into black. All dark areas are built from dense lines and scale shading, not grey ink. This keeps the piece looking clean as it ages.</span>
+      <span class="ko">몸통이 시야에서 멀어지거나 한 부분이 다른 부분 아래로 지나갈 때 완전한 검정색이 됩니다. 부드러운 그라데이션이 아닌 — 검정으로 이어지는 선명한 경계입니다. 어두운 부분은 모두 촘촘한 선과 비늘 음영으로 만들어지며, 회색 잉크를 사용하지 않습니다.</span>
+    </p>
   </div>
 
   <!-- ════════════════════════════════ -->
-  <!--  7 — SHADING: COIL TWIST        -->
+  <!--  7 — SHADING: COIL              -->
   <!-- ════════════════════════════════ -->
-  <div class="slide">
+  <div class="slide detail-slide">
     <p class="label">02 — Shading · Coil</p>
-    <h2>The Coil Twist Shadow</h2>
-    <div class="shading-layout">
-      <div>
-        <img src="images/coil-shading.png" class="slide-img" style="max-height:58vh" alt="Coil twist shadow" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="img-ph" style="min-height:300px">coil-shading.png</div>
-        <p class="img-caption">Inside of curve = black. Apex = lightest. The bend is the light source.</p>
-      </div>
-      <div>
-        <p class="body">
-          When the snake body bends into a loop, the curve itself generates the lighting —
-          not an external light source.
-          <br><br>
-          The <strong>inside of the curve</strong> (the tightest part of the bend) drops
-          to near-pure black — a hard, confident shadow shape.
-          The <strong>apex of the curve</strong> (where the body faces outward)
-          is the lightest point, scale texture fully visible.
-          The sides transition quickly from apex to shadow.
-          <br><br>
-          These inner-curve blacks become <strong>abstract shapes in their own right</strong> —
-          bold dark voids that add visual weight to every coil.
-          They're not just shadows — they're compositional elements.
-          <br><br>
-          The twist is the shading. The bend tells you where the dark goes.
-        </p>
-      </div>
+    <h2><span class="en">Coil Shadow</span><span class="ko">코일 음영</span></h2>
+    <div class="detail-image">
+      <img src="images/coil-shading.png" alt="Coil shadow" onerror="this.style.display='none'">
     </div>
+    <p class="detail-cap">
+      <span class="en">Inside the bend of every loop: solid black. Outside the bend (facing outward): lightest. The shadow follows the shape of the bend itself — no separate light source. The black areas inside the loops are important. They give the piece visual weight and drama.</span>
+      <span class="ko">모든 루프의 굽어진 안쪽: 완전한 검정. 굽어진 바깥쪽(외부를 향한 면): 가장 밝은 부분. 음영은 별도의 광원 없이 굽힘 형태 자체를 따릅니다. 루프 안쪽의 검정 부분은 중요합니다 — 작품에 시각적 무게감과 드라마틱함을 부여합니다.</span>
+    </p>
   </div>
 
   <!-- ════════════════════════════════ -->
   <!--  8 — SHADING: HEAD              -->
   <!-- ════════════════════════════════ -->
-  <div class="slide">
+  <div class="slide detail-slide">
     <p class="label">02 — Shading · Head</p>
-    <h2>Head Anatomy</h2>
-    <div class="three-col">
-      <div>
-        <p class="body">
-          The head uses the same per-scale shading as the body, but the scales are
-          <strong>larger and more individually prominent</strong>.
-          <br><br>
-          <strong>Eye:</strong> a simple clean circle — small, round dark pupil,
-          no elaborate rendering. Quiet.
-          <br><br>
-          <strong>Closed mouth for this piece.</strong> No open jaw.
-          The snake is calm and self-contained — not a strike pose.
-          The right image shows Bayun's default (open mouth) as contrast —
-          this is what we're specifically NOT doing.
-          <br><br>
-          Tongue if present: two ultra-fine lines, trailing softly.
-          Almost not there.
-        </p>
+    <h2><span class="en">The Head</span><span class="ko">머리</span></h2>
+    <div class="inner-carousel" id="shade-head">
+      <div class="inner-carousel-track">
+        <div class="inner-slide active">
+          <img src="images/head-closeup-shoulder.png" alt="Head close-up" onerror="this.style.display='none'">
+          <p class="inner-cap">
+            <span class="en">This — closed mouth, calm expression. Large individual scales on the head, same shading logic as the body. Small, simple eye — no complex iris detail.</span>
+            <span class="ko">이것 — 닫힌 입, 차분한 표정. 머리의 비늘은 크고 개별적이며, 몸통과 동일한 음영 원리 적용. 눈은 작고 단순하게.</span>
+          </p>
+        </div>
+        <div class="inner-slide">
+          <img src="images/head-open-mouth-ref.png" alt="Open mouth — not this" onerror="this.style.display='none'">
+          <p class="inner-cap red">
+            <span class="en">NOT this — Bayun's default is open mouth. My piece should have a closed, calm mouth. The energy is powerful but not aggressive.</span>
+            <span class="ko">이것은 안 됩니다 — 바윤의 기본 스타일은 열린 입입니다. 제 작품은 닫힌 차분한 입이어야 합니다. 힘차지만 공격적이지 않은 표현.</span>
+          </p>
+        </div>
       </div>
-      <div>
-        <img src="images/head-closeup-shoulder.png" class="slide-img" style="max-height:50vh" alt="Head close-up" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="img-ph" style="min-height:240px">head-closeup-shoulder.png</div>
-        <p class="img-caption">Large individual head scales, same gradient logic as body</p>
-      </div>
-      <div>
-        <img src="images/head-open-mouth-ref.png" class="slide-img" style="max-height:50vh" alt="Open mouth contrast" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="img-ph" style="min-height:240px">head-open-mouth-ref.png</div>
-        <p class="img-caption" style="color:var(--red)">NOT this — Bayun's default is open mouth; mine is closed</p>
-      </div>
+      <button class="inner-prev" onclick="innerNav('shade-head',-1);event.stopPropagation()">&#8592;</button>
+      <button class="inner-next" onclick="innerNav('shade-head', 1);event.stopPropagation()">&#8594;</button>
+      <div class="inner-counter" id="shade-head-counter">1 / 2</div>
     </div>
   </div>
 
   <!-- ════════════════════════════════ -->
-  <!--  8 — COMPOSITION: SILHOUETTE    -->
+  <!--  9 — COMPOSITION: SILHOUETTE    -->
   <!-- ════════════════════════════════ -->
-  <div class="slide">
+  <div class="slide detail-slide">
     <p class="label">03 — Composition · Silhouette</p>
-    <h2>The Tapered Diamond Silhouette</h2>
-    <div class="shading-layout">
-      <div>
-        <p class="body">
-          The overall bounding shape of the piece is an elongated diamond —
-          wide at the top where the leg is widest (hip/quad),
-          narrowing to a point at the ankle.
-          <br><br>
-          This mirrors the natural reverse taper of the leg itself.
-          <strong>The silhouette of the composition and the silhouette of the body become the same shape.</strong>
-          The piece belongs to the leg rather than sitting on top of it.
-          <br><br>
-          The width of the coil spread grows proportionally as the leg gets wider going up —
-          this is what Bayun got right and what Bobby needs to preserve.
-        </p>
-      </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px">
-        <div>
-          <img src="images/annotated-silhouette-diamond.jpg" class="slide-img" style="max-height:48vh" alt="Diamond silhouette" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <div class="img-ph" style="min-height:200px">annotated-silhouette-diamond.jpg</div>
+    <h2><span class="en">Diamond Silhouette Shape</span><span class="ko">다이아몬드 실루엣 형태</span></h2>
+    <div class="inner-carousel" id="comp-silhouette">
+      <div class="inner-carousel-track">
+        <div class="inner-slide active">
+          <img src="images/annotated-silhouette-diamond.jpg" alt="Diamond silhouette" onerror="this.style.display='none'">
+          <p class="inner-cap">
+            <span class="en">The whole composition forms a diamond shape — wide at the top (hip), narrow at the ankle. The shape of the piece matches the shape of the leg.</span>
+            <span class="ko">전체 구성이 다이아몬드 형태 — 위쪽(엉덩이)은 넓고, 발목은 좁습니다. 작품의 형태가 다리의 형태와 일치합니다.</span>
+          </p>
         </div>
-        <div>
-          <img src="images/annotated-taper-width.jpg" class="slide-img" style="max-height:48vh" alt="Taper width" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <div class="img-ph" style="min-height:200px">annotated-taper-width.jpg</div>
+        <div class="inner-slide">
+          <img src="images/annotated-taper-width.jpg" alt="Taper width" onerror="this.style.display='none'">
+          <p class="inner-cap">
+            <span class="en">The coil spread grows wider as the leg gets wider going up. This proportional growth must be preserved — it is what makes the piece feel like it belongs to the leg.</span>
+            <span class="ko">코일의 폭은 위로 갈수록 다리가 넓어짐에 따라 함께 넓어집니다. 이 비례적 성장은 반드시 유지되어야 합니다 — 이것이 작품을 다리에 자연스럽게 속하게 만드는 요소입니다.</span>
+          </p>
         </div>
       </div>
+      <button class="inner-prev" onclick="innerNav('comp-silhouette',-1);event.stopPropagation()">&#8592;</button>
+      <button class="inner-next" onclick="innerNav('comp-silhouette', 1);event.stopPropagation()">&#8594;</button>
+      <div class="inner-counter" id="comp-silhouette-counter">1 / 2</div>
     </div>
   </div>
 
   <!-- ════════════════════════════════ -->
-  <!--  9 — COMPOSITION: TRIANGLE      -->
+  <!--  10 — COMPOSITION: TRIANGLE     -->
   <!-- ════════════════════════════════ -->
-  <div class="slide">
+  <div class="slide detail-slide">
     <p class="label">03 — Composition · Geometry</p>
-    <h2>Triangle + Head Direction</h2>
-    <div class="shading-layout">
-      <div>
-        <img src="images/annotated-triangle-infinity.jpg" class="slide-img" style="max-height:55vh" alt="Triangle and head" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="img-ph" style="min-height:300px">annotated-triangle-infinity.jpg</div>
-      </div>
-      <div>
-        <p class="body">
-          The upper coils near the hip form a secondary triangle shape.
-          Inside it, the snake's head is positioned to follow the
-          <strong>natural diagonal of the oblique muscles</strong>.
-          The head direction isn't arbitrary — it's anatomically intentional.
-          <br><br>
-          There's also a secondary triangle formed by the infinity knot and the neck area —
-          interesting geometry that creates visual rhythm across the piece.
-          <br><br>
-          The piece reads as placed by the body, not placed on it.
-        </p>
-      </div>
+    <h2><span class="en">Upper Coil Triangle</span><span class="ko">상단 코일 삼각형</span></h2>
+    <div class="detail-image">
+      <img src="images/annotated-triangle-infinity.jpg" alt="Upper coil triangle" onerror="this.style.display='none'">
     </div>
+    <p class="detail-cap">
+      <span class="en">The upper coils near the hip form a triangle shape. The snake's head points in the direction of the oblique muscles — this is intentional, not random. The placement follows the anatomy of the body. There is also a secondary triangle formed by the figure-8 knot area near the neck.</span>
+      <span class="ko">엉덩이 근처의 상단 코일이 삼각형 형태를 만듭니다. 뱀의 머리는 복사근 방향을 따라 향하고 있습니다 — 이것은 의도적이며 무작위가 아닙니다. 배치는 신체의 해부학적 구조를 따릅니다. 목 근처의 8자 매듭 부분에도 보조 삼각형이 형성됩니다.</span>
+    </p>
   </div>
 
   <!-- ════════════════════════════════ -->
-  <!--  10 — COMPOSITION: MÖBIUS       -->
+  <!--  11 — COMPOSITION: LOOP OVER    -->
   <!-- ════════════════════════════════ -->
-  <div class="slide">
-    <p class="label">03 — Composition · Motion</p>
-    <h2>The Möbius Effect</h2>
-    <div class="shading-layout">
-      <div>
-        <p class="body">
-          The snake's head overlaps its own body. This is a specific, intelligent choice.
-          It creates a <strong>Möbius strip or infinite loop quality</strong> —
-          follow the snake's motion and you never find a beginning or end.
-          The flow is continuous.
-          <br><br>
-          It makes the piece feel alive in a way that a snake with a clear
-          start and end point doesn't. The eye keeps moving.
-          <br><br>
-          Combined with the top of the snake <strong>curling back on itself</strong>
-          as it rises toward the ribs — the whole piece has a self-referential,
-          looping energy that never resolves. That's the intention.
-        </p>
-      </div>
-      <div>
-        <img src="images/annotated-mobius.jpg" class="slide-img" style="max-height:55vh" alt="Möbius effect" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="img-ph" style="min-height:300px">annotated-mobius.jpg</div>
-      </div>
+  <div class="slide detail-slide">
+    <p class="label">03 — Composition · Continuity</p>
+    <h2><span class="en">Snake Loops Over Itself</span><span class="ko">뱀이 자신의 몸 위로 교차</span></h2>
+    <div class="detail-image">
+      <img src="images/annotated-mobius.jpg" alt="Snake looping over itself" onerror="this.style.display='none'">
     </div>
+    <p class="detail-cap">
+      <span class="en">The snake's head crosses over its own body. Because of this, the snake has no clear start point and no clear end point. When you follow it with your eyes, you keep going — the movement never stops. This is what makes the piece feel alive and continuous.</span>
+      <span class="ko">뱀의 머리가 자신의 몸 위로 교차합니다. 이 때문에 뱀에는 명확한 시작점도 끝점도 없습니다. 눈으로 따라가면 계속 이어지며 — 움직임이 멈추지 않습니다. 이것이 작품을 살아있고 연속적으로 느끼게 만드는 요소입니다.</span>
+    </p>
   </div>
 
   <!-- ════════════════════════════════ -->
-  <!--  11 — COMPOSITION: NEG SPACE    -->
+  <!--  12 — COMPOSITION: NEG SPACE    -->
   <!-- ════════════════════════════════ -->
-  <div class="slide">
+  <div class="slide detail-slide">
     <p class="label">03 — Composition · Negative Space</p>
-    <h2>Infinity Knot + Negative Ring Space</h2>
-    <div class="shading-layout">
-      <div>
-        <img src="images/annotated-negative-space.jpg" class="slide-img" style="max-height:55vh" alt="Negative space" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="img-ph" style="min-height:300px">annotated-negative-space.jpg</div>
-        <p class="img-caption">A rich variety of negative space sizes — each one designed, not incidental</p>
-      </div>
-      <div>
-        <p class="body">
-          The lower-mid section contains a clear <strong>figure-8 infinity knot</strong> —
-          a designed shape, not just a coil. It's a visual and conceptual anchor of the piece.
-          <br><br>
-          Throughout the piece, large ring shapes create open negative space voids.
-          <strong>These are designed shapes — as intentional as the snake itself.</strong>
-          The circles of skin inside the coils carry visual weight.
-          A rich variety of negative space sizes creates contrast and interest across the composition.
-          <br><br>
-          The big sweeping ring on the quad was specifically requested —
-          that open skin is not leftover space.
-        </p>
-      </div>
+    <h2><span class="en">Designed Negative Space</span><span class="ko">의도된 여백</span></h2>
+    <div class="detail-image">
+      <img src="images/annotated-negative-space.jpg" alt="Negative space design" onerror="this.style.display='none'">
     </div>
+    <p class="detail-cap">
+      <span class="en">The open skin inside the loops is not empty space — it is designed. There are open areas of different sizes placed throughout the piece. Smaller open areas and larger open areas together create visual contrast and interest. The large ring shape on the upper thigh was specifically requested by me — that open skin must stay.</span>
+      <span class="ko">루프 안쪽의 열린 피부는 비어있는 공간이 아닙니다 — 디자인된 공간입니다. 작품 전체에 크기가 다른 열린 공간들이 배치되어 있습니다. 작은 열린 공간과 큰 열린 공간이 함께 시각적 대비와 흥미를 만듭니다. 허벅지 상단의 큰 링 형태는 제가 특별히 요청한 것입니다 — 그 열린 피부는 반드시 유지되어야 합니다.</span>
+    </p>
   </div>
 
   <!-- ════════════════════════════════ -->
-  <!--  12 — COMPOSITION: FLOW         -->
+  <!--  13 — COMPOSITION: FLOW         -->
   <!-- ════════════════════════════════ -->
-  <div class="slide">
+  <div class="slide detail-slide">
     <p class="label">03 — Composition · Flow</p>
-    <h2>Consistent Directional Zig-Zag</h2>
-    <div class="shading-layout">
-      <div>
-        <p class="body">
-          The snake's overall motion follows a <strong>consistent upward zig-zag</strong> —
-          not random, not chaotic. The zig-zag size increases proportionally
-          as the leg gets wider going up.
-          At the top, the composition goes straight up to align with
-          the hip transition.
-          <br><br>
-          <strong>Breathing room is maintained at the front edge</strong> —
-          the snake never crowds the boundary. This keeps it from feeling forced.
-          <br><br>
-          The comparison image (right) shows coherent directional flow on the left side
-          vs. directionless chaos on the right side. The left is always the goal.
-        </p>
-      </div>
-      <div>
-        <img src="images/comparison.png" class="slide-img" style="max-height:55vh" alt="Flow comparison" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="img-ph" style="min-height:300px">comparison.png — good vs bad directional flow</div>
-      </div>
+    <h2><span class="en">Directional Flow</span><span class="ko">방향성 흐름</span></h2>
+    <div class="detail-image">
+      <img src="images/comparison.png" alt="Directional flow comparison" onerror="this.style.display='none'">
     </div>
+    <p class="detail-cap">
+      <span class="en">The snake moves in a consistent zig-zag pattern from ankle to hip. The zig-zag gets larger as the leg gets wider going up. Left image (good): clear, consistent direction. Right image (bad): random direction with no flow. The left example is always the goal.</span>
+      <span class="ko">뱀은 발목에서 엉덩이까지 일정한 지그재그 패턴으로 움직입니다. 위로 갈수록 다리가 넓어지면서 지그재그도 커집니다. 왼쪽 이미지(좋은 예): 명확하고 일관된 방향. 오른쪽 이미지(나쁜 예): 흐름이 없는 무작위 방향. 왼쪽 예시가 항상 목표입니다.</span>
+    </p>
   </div>
 
   <!-- ════════════════════════════════ -->
@@ -746,102 +678,117 @@
   <!-- ════════════════════════════════ -->
   <div class="slide">
     <p class="label">The Brief</p>
-    <h2 style="margin-bottom:20px">Bobby's Checklist</h2>
+    <h2 style="margin-bottom:20px"><span class="en">Bobby's Checklist</span><span class="ko">Bobby의 체크리스트</span></h2>
     <div class="checklist">
       <div>
         <div class="check">
           <div class="checkbox"></div>
-          <div class="check-label">Per-scale gradient shading
-            <span class="check-sub">Dark at base of each scale, light at free edge — every scale individually</span>
+          <div class="check-label"><span class="en">Per-scale gradient shading</span><span class="ko">비늘별 그라데이션 음영</span>
+            <span class="check-sub"><span class="en">Dark at base of each scale, light at free edge — every scale individually</span><span class="ko">각 비늘의 아랫부분은 어둡고, 끝부분은 밝게 — 모든 비늘 개별 처리</span></span>
           </div>
         </div>
         <div class="check">
           <div class="checkbox"></div>
-          <div class="check-label">Hard body shadow cuts
-            <span class="check-sub">Shadow side goes deep black quickly — no soft grey washes</span>
+          <div class="check-label"><span class="en">Hard body shadow cuts</span><span class="ko">선명한 몸통 음영</span>
+            <span class="check-sub"><span class="en">Shadow side goes deep black quickly — no soft grey washes</span><span class="ko">그림자 부분은 빠르게 깊은 검정으로 — 부드러운 회색 없음</span></span>
           </div>
         </div>
         <div class="check">
           <div class="checkbox"></div>
-          <div class="check-label">Coil twist shadow logic
-            <span class="check-sub">Inside of curve = black; apex = light. The bend is the light source.</span>
+          <div class="check-label"><span class="en">Coil shadow logic</span><span class="ko">코일 음영 원리</span>
+            <span class="check-sub"><span class="en">Inside of curve = black; outside of curve = light</span><span class="ko">굽힘 안쪽 = 검정; 굽힘 바깥쪽 = 밝음</span></span>
           </div>
         </div>
         <div class="check">
           <div class="checkbox"></div>
-          <div class="check-label">Dual-texture scales
-            <span class="check-sub">Diamond dorsal scales; horizontal parallel lines on belly (ventral)</span>
+          <div class="check-label"><span class="en">Two different textures</span><span class="ko">두 가지 다른 질감</span>
+            <span class="check-sub"><span class="en">Diamond scales on back; horizontal parallel bands on belly</span><span class="ko">등: 다이아몬드 비늘; 배: 수평 평행 밴드</span></span>
           </div>
         </div>
         <div class="check">
           <div class="checkbox"></div>
-          <div class="check-label">Closed mouth, calm head
-            <span class="check-sub">No open jaw — peaceful, powerful, self-contained</span>
+          <div class="check-label"><span class="en">Closed mouth, calm head</span><span class="ko">닫힌 입, 차분한 머리</span>
+            <span class="check-sub"><span class="en">No open jaw — peaceful, powerful, not aggressive</span><span class="ko">열린 턱 없음 — 평화롭고 강하며 공격적이지 않게</span></span>
           </div>
         </div>
         <div class="check">
           <div class="checkbox"></div>
-          <div class="check-label">Head overlaps its own body
-            <span class="check-sub">Möbius effect — continuous motion, no start or end</span>
+          <div class="check-label"><span class="en">Head crosses over its own body</span><span class="ko">머리가 자신의 몸 위로 교차</span>
+            <span class="check-sub"><span class="en">No clear start or end — eye keeps moving around the piece</span><span class="ko">명확한 시작점/끝점 없음 — 시선이 계속 작품 주변을 돌게 됨</span></span>
           </div>
         </div>
         <div class="check">
           <div class="checkbox"></div>
-          <div class="check-label">Wispy motion lines from head/tail
-            <span class="check-sub">3–5 fine curving lines — sparse, never overdone</span>
+          <div class="check-label"><span class="en">Wispy motion lines from head/tail</span><span class="ko">머리/꼬리의 가는 동선</span>
+            <span class="check-sub"><span class="en">3–5 fine curving lines — sparse, never overdone</span><span class="ko">3–5개의 가는 곡선 — 드물게, 과하지 않게</span></span>
           </div>
         </div>
       </div>
       <div>
         <div class="check">
           <div class="checkbox"></div>
-          <div class="check-label">Tapered diamond overall silhouette
-            <span class="check-sub">Wide at hip, point at ankle — mirrors the leg</span>
+          <div class="check-label"><span class="en">Diamond overall silhouette</span><span class="ko">다이아몬드 전체 실루엣</span>
+            <span class="check-sub"><span class="en">Wide at hip, point at ankle — matches the shape of the leg</span><span class="ko">엉덩이는 넓고, 발목은 좁게 — 다리 형태와 일치</span></span>
           </div>
         </div>
         <div class="check">
           <div class="checkbox"></div>
-          <div class="check-label">Triangle framing in upper section
-            <span class="check-sub">Upper coils form a triangle; head follows oblique muscle line</span>
+          <div class="check-label"><span class="en">Triangle shape in upper section</span><span class="ko">상단의 삼각형 형태</span>
+            <span class="check-sub"><span class="en">Upper coils form a triangle; head follows the oblique muscle line</span><span class="ko">상단 코일이 삼각형 형성; 머리는 복사근 라인을 따름</span></span>
           </div>
         </div>
         <div class="check">
           <div class="checkbox"></div>
-          <div class="check-label">Clear infinity knot in lower/mid
-            <span class="check-sub">Deliberate figure-8 shape — not just a coil</span>
+          <div class="check-label"><span class="en">Figure-8 knot in lower/mid section</span><span class="ko">하단/중간의 8자 매듭</span>
+            <span class="check-sub"><span class="en">A clear 8-shape — not just a random coil</span><span class="ko">명확한 8자 형태 — 무작위 코일이 아님</span></span>
           </div>
         </div>
         <div class="check">
           <div class="checkbox"></div>
-          <div class="check-label">Large negative ring spaces preserved
-            <span class="check-sub">Open coil voids are designed — don't fill them</span>
+          <div class="check-label"><span class="en">Open ring spaces preserved</span><span class="ko">열린 링 공간 유지</span>
+            <span class="check-sub"><span class="en">The skin inside the loops is designed — do not fill it in</span><span class="ko">루프 안의 피부는 디자인된 것 — 채우지 마세요</span></span>
           </div>
         </div>
         <div class="check">
           <div class="checkbox"></div>
-          <div class="check-label">Consistent upward zig-zag flow
-            <span class="check-sub">Coherent directed motion — never chaotic</span>
+          <div class="check-label"><span class="en">Consistent zig-zag flow, ankle to hip</span><span class="ko">발목에서 엉덩이까지 일관된 지그재그</span>
+            <span class="check-sub"><span class="en">Clear upward direction — never random or chaotic</span><span class="ko">명확한 상향 방향 — 무작위나 혼란스럽지 않게</span></span>
           </div>
         </div>
         <div class="check">
           <div class="checkbox"></div>
-          <div class="check-label">Zig-zag scales with leg width
-            <span class="check-sub">Loops get proportionally wider going up</span>
+          <div class="check-label"><span class="en">Loops get wider going up</span><span class="ko">위로 갈수록 루프가 넓어짐</span>
+            <span class="check-sub"><span class="en">Proportional to the leg width — follows body anatomy</span><span class="ko">다리 너비에 비례 — 신체 해부학을 따름</span></span>
           </div>
         </div>
         <div class="check">
           <div class="checkbox"></div>
-          <div class="check-label">Body loops follow body contours
-            <span class="check-sub">Waist, rear, quad — looks like it belongs, not placed on top</span>
+          <div class="check-label"><span class="en">See more of Bayun's work</span><span class="ko">바윤의 작품 더 보기</span>
+            <span class="check-sub"><a href="https://www.instagram.com/bayun.tattoos/" target="_blank" style="color:var(--red); text-decoration:none">@bayun.tattoos on Instagram</a></span>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ════════════════════════════════ -->
+  <!--  14 — THANK YOU                 -->
+  <!-- ════════════════════════════════ -->
+  <div class="slide" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center">
+    <p class="label" style="text-align:center">The End</p>
+    <h2 style="font-size:3.5rem; margin-bottom:24px"><span class="en">Thank you, Bobby.</span><span class="ko">감사합니다, Bobby.</span></h2>
+    <p class="body" style="max-width:560px; margin:0 auto 32px; color:var(--muted)">
+      <span class="en">Bayun designed this snake with a lot of care. I trust you to bring it to life with your own skill and attention. I'm excited to work with you.</span>
+      <span class="ko">바윤은 이 뱀을 많은 정성을 담아 디자인했습니다. Bobby의 실력과 세심함으로 이 디자인에 생명을 불어넣어 주실 것을 믿습니다. 함께 작업하게 되어 기쁩니다.</span>
+    </p>
+    <a href="https://www.instagram.com/bayun.tattoos/" target="_blank" style="font-size:0.8rem; letter-spacing:0.12em; color:var(--red); text-decoration:none; border:1px solid var(--red); padding:10px 24px; border-radius:3px">@bayun.tattoos</a>
+  </div>
+
 </div><!-- /deck -->
 
 <!-- ══ NAV ══ -->
+<button id="lang-toggle" onclick="toggleLang()">KO / EN</button>
+
 <nav class="nav">
   <button class="nav-btn" id="prev" aria-label="Previous">←</button>
   <div class="nav-center">
@@ -893,6 +840,12 @@
     const dx = e.changedTouches[0].clientX - tx;
     if (Math.abs(dx) > 50) dx < 0 ? goTo(cur + 1) : goTo(cur - 1);
   });
+
+  function toggleLang() {
+    document.body.classList.toggle('korean');
+    const btn = document.getElementById('lang-toggle');
+    btn.textContent = document.body.classList.contains('korean') ? 'EN' : 'KO';
+  }
 
   function innerNav(id, dir) {
     const el = document.getElementById(id);
