@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Brief for Bobby — Bayun's Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080808;
+      --card: #0f0f0f;
+      --border: #1c1c1c;
+      --text: #e6e0d6;
+      --muted: #6b6560;
+      --red: #c0281f;
+      --red-dim: #5a1210;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 48px;
+    }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(3.5rem, 6vw, 6rem);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 36px;
+    }
+
+    h1 em { font-style: italic; color: var(--red); }
+
+    .hero-desc {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.85;
+      max-width: 400px;
+    }
+
+    .hero-img img {
+      width: 100%;
+      max-height: 85vh;
+      object-fit: contain;
+    }
+
+    /* ── LAYOUT ── */
+    .divider { height: 1px; background: var(--border); max-width: 1200px; margin: 0 auto; }
+
+    section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 96px 48px;
+    }
+
+    .sec-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2.2rem, 4vw, 3.75rem);
+      font-weight: 300;
+      line-height: 1.08;
+      margin-bottom: 18px;
+    }
+
+    .sec-intro {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 580px;
+      margin-bottom: 64px;
+      line-height: 1.8;
+    }
+
+    h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.9rem;
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+
+    /* ── REFERENCE GRID ── */
+    .ref-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 8px;
+    }
+
+    .ref-grid .ref-item:nth-child(1) { grid-column: 1 / 3; }
+    .ref-grid .ref-item:nth-child(2) { grid-column: 3; grid-row: 1 / 3; }
+    .ref-grid .ref-item:nth-child(3),
+    .ref-grid .ref-item:nth-child(4),
+    .ref-grid .ref-item:nth-child(5) { grid-column: auto; }
+
+    .ref-item {
+      overflow: hidden;
+      background: var(--card);
+      min-height: 320px;
+    }
+
+    .ref-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .ref-item:hover img { transform: scale(1.04); }
+
+    /* ── DNA GRID ── */
+    .dna-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-top: 0;
+    }
+
+    .dna-card {
+      background: var(--card);
+      padding: 40px 36px;
+    }
+
+    .dna-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      color: var(--red-dim);
+      line-height: 1;
+      margin-bottom: 22px;
+    }
+
+    .dna-title {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .dna-desc {
+      font-size: 0.9375rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ── PRINCIPLE ── */
+    .principle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      padding: 72px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .principle:last-child { border-bottom: none; }
+
+    .principle.flip { direction: rtl; }
+    .principle.flip > * { direction: ltr; }
+
+    .p-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 10px;
+    }
+
+    .p-body {
+      color: var(--muted);
+      font-size: 0.9375rem;
+      line-height: 1.85;
+      margin-top: 14px;
+    }
+
+    .p-body strong { color: var(--text); font-weight: 400; }
+
+    .p-img img {
+      width: 100%;
+      max-height: 620px;
+      object-fit: contain;
+    }
+
+    /* ── COMPARISON ── */
+    .comparison-wrap { margin-top: 40px; }
+    .comparison-wrap img { width: 100%; max-height: 520px; object-fit: contain; }
+
+    /* ── CHECKLIST ── */
+    .checklist {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 64px;
+    }
+
+    .check {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .checkbox {
+      width: 16px;
+      height: 16px;
+      border: 1px solid var(--red);
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .check-label { font-size: 0.9375rem; line-height: 1.55; }
+
+    .check-sub {
+      display: block;
+      font-size: 0.8125rem;
+      color: var(--muted);
+      margin-top: 5px;
+      line-height: 1.6;
+    }
+
+    /* ── IMAGE PLACEHOLDER ── */
+    .img-ph {
+      background: var(--card);
+      border: 1px dashed #252525;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      color: #383838;
+      font-size: 0.8125rem;
+      text-align: center;
+      padding: 24px;
+      gap: 10px;
+    }
+
+    .img-ph code {
+      font-size: 0.75rem;
+      color: #2a2a2a;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 44px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8125rem;
+      color: var(--muted);
+      max-width: 100%;
+    }
+
+    footer a { color: var(--red); text-decoration: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; gap: 48px; min-height: auto; padding: 60px 24px; }
+      section { padding: 64px 24px; }
+      .ref-grid { grid-template-columns: 1fr 1fr; }
+      .ref-grid .ref-item:nth-child(1),
+      .ref-grid .ref-item:nth-child(2) { grid-column: auto; grid-row: auto; }
+      .principle { grid-template-columns: 1fr; gap: 40px; direction: ltr; }
+      .principle.flip { direction: ltr; }
+      .checklist { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 8px; text-align: center; padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!--  HERO                                   -->
+<!-- ╚══════════════════════════════════════╝ -->
+<div class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">A Creative Brief</p>
+    <h1>For<br><em>Bobby</em></h1>
+    <p class="hero-desc">
+      Bayun designed this piece for my leg. He can't be here to execute it,
+      so I'm bringing it to you. This brief exists to make sure his DNA
+      travels with the design. Everything on this page is something that matters.
+    </p>
+  </div>
+  <div class="hero-img">
+    <img src="images/design.png" alt="Bayun's design" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <div class="img-ph" style="min-height:560px"><code>images/design.png</code>Bayun's design for your piece</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!--  01 — THE ARTIST                        -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section>
+  <p class="sec-label">01 — The Artist</p>
+  <h2>Bayun's Work</h2>
+  <p class="sec-intro">
+    Before my piece specifically — this is the visual language.
+    These are Bayun's snakes across different placements.
+    This is the standard to match.
+  </p>
+
+  <div class="ref-grid">
+    <div class="ref-item" style="min-height:500px">
+      <img src="images/ref1.png" alt="Leg/hip piece with red cord" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="img-ph"><code>images/ref1.png</code>Leg/hip piece — the red cord piece</div>
+    </div>
+    <div class="ref-item" style="min-height:500px">
+      <img src="images/ref4.png" alt="Full back piece" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="img-ph"><code>images/ref4.png</code>Full back piece</div>
+    </div>
+    <div class="ref-item" style="min-height:280px">
+      <img src="images/ref2.png" alt="Leg piece side view" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="img-ph"><code>images/ref2.png</code></div>
+    </div>
+    <div class="ref-item" style="min-height:280px">
+      <img src="images/ref3.png" alt="Leg piece rear view" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="img-ph"><code>images/ref3.png</code></div>
+    </div>
+    <div class="ref-item" style="min-height:280px">
+      <img src="images/ref5.png" alt="Shoulder piece with thorns" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="img-ph"><code>images/ref5.png</code>Shoulder/arm piece</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!--  02 — STYLE DNA                         -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section>
+  <p class="sec-label">02 — Technical Language</p>
+  <h2>Bayun's Style DNA</h2>
+  <p class="sec-intro">
+    These aren't stylistic preferences — they're structural.
+    The elements that make a Bayun snake a Bayun snake.
+  </p>
+
+  <div class="dna-grid">
+    <div class="dna-card">
+      <div class="dna-num">01</div>
+      <div class="dna-title">Dual-Texture Scales</div>
+      <div class="dna-desc">
+        Two distinct scale treatments on the same snake.
+        The dorsal (top) body: large, clearly defined diamond or rhombus-shaped scales.
+        The ventral (belly) surface: tight horizontal parallel lines like compressed ribs.
+        This contrast gives the snake its 3D dimensionality and separates
+        the top of the body from the underside visually.
+      </div>
+    </div>
+    <div class="dna-card">
+      <div class="dna-num">02</div>
+      <div class="dna-title">Deep Black Saturation</div>
+      <div class="dna-desc">
+        Shadow zones and coil folds go fully black — not grey, not softly shaded.
+        True ink saturation in the deepest areas, then fine linework everywhere else.
+        No muddy midtone range. The contrast is stark: deep black vs. precise fine lines.
+        Nothing in between.
+      </div>
+    </div>
+    <div class="dna-card">
+      <div class="dna-num">03</div>
+      <div class="dna-title">Deliberate Negative Space</div>
+      <div class="dna-desc">
+        The skin showing through the coils isn't leftover — it's designed.
+        Large open loops create intentional voids that carry as much visual
+        weight as the snake itself. The negative space has shape.
+        Don't fill it.
+      </div>
+    </div>
+    <div class="dna-card">
+      <div class="dna-num">04</div>
+      <div class="dna-title">Red Cord Accents</div>
+      <div class="dna-desc">
+        A signature in some pieces: fine red knotted rope threading around the snake.
+        Sparse — it doesn't dominate. The red is the only color in the entire piece;
+        everything else is black and grey. It appears in some of Bayun's work and not others.
+        It's a choice, not a rule.
+      </div>
+    </div>
+    <div class="dna-card">
+      <div class="dna-num">05</div>
+      <div class="dna-title">Wispy Motion Lines</div>
+      <div class="dna-desc">
+        Fine hair-like lines extend from the snake's head and tail, suggesting
+        movement through air. Three to five lines, curving organically.
+        They're sparse — never overdone. They make the snake feel alive rather
+        than static on the skin.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!--  03 — WHAT TO PRESERVE                  -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section>
+  <p class="sec-label">03 — The Design</p>
+  <h2>What to Preserve</h2>
+  <p class="sec-intro">
+    Every compositional choice Bayun made for this piece is intentional.
+    Here's what each one is and why it matters.
+  </p>
+
+  <!-- Principle 1: Silhouette -->
+  <div class="principle">
+    <div class="p-text">
+      <p class="p-tag">Composition</p>
+      <h3>The Tapered Diamond Silhouette</h3>
+      <p class="p-body">
+        The entire piece fits inside an elongated diamond shape — wide at the top
+        where the leg is widest (hip and quad), narrowing to a point at the ankle.
+        This mirrors the natural reverse taper of the leg itself.
+        The silhouette of the composition and the silhouette of the body become the same shape.
+        The piece belongs to the leg rather than sitting on top of it.
+      </p>
+    </div>
+    <div class="p-img">
+      <img src="images/annotated1.png" alt="Tapered diamond silhouette diagram" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="img-ph"><code>images/annotated1.png</code>Silhouette arrow diagram</div>
+    </div>
+  </div>
+
+  <!-- Principle 2: Triangle + Head -->
+  <div class="principle flip">
+    <div class="p-text">
+      <p class="p-tag">Geometry</p>
+      <h3>Triangle in the Upper Section</h3>
+      <p class="p-body">
+        The upper portion of the design — the coils near the hip — forms a secondary triangle.
+        Inside it, the snake's head is positioned to follow the natural diagonal of the oblique
+        muscles. The head direction isn't arbitrary: it's aligned with the body beneath it.
+        The piece reads as anatomically intentional, not placed.
+        <br><br>
+        The triangle formed by the infinity knot and the neck area is another secondary shape
+        worth noting — there's interesting geometry throughout.
+      </p>
+    </div>
+    <div class="p-img">
+      <img src="images/annotated2.png" alt="Triangle framing and head direction" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="img-ph"><code>images/annotated2.png</code>Triangle + head direction diagram</div>
+    </div>
+  </div>
+
+  <!-- Principle 3: Möbius -->
+  <div class="principle">
+    <div class="p-text">
+      <p class="p-tag">Motion</p>
+      <h3>The Möbius Effect</h3>
+      <p class="p-body">
+        The snake's head overlaps its own body. This is a specific, deliberate choice:
+        it creates a Möbius strip or infinite loop quality. Follow the snake's motion
+        and you never find a beginning or end — the flow is continuous.
+        It makes the piece feel alive in a way a snake with a clear start and end doesn't.
+        <br><br>
+        <strong>Note:</strong> My piece has a closed mouth. No open jaw, no menacing expression.
+        The head is calm and tucked — this is not a strike pose.
+      </p>
+    </div>
+    <div class="p-img">
+      <img src="images/annotated3.png" alt="Möbius loop / infinite motion" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="img-ph"><code>images/annotated3.png</code>Möbius / infinite loop diagram</div>
+    </div>
+  </div>
+
+  <!-- Principle 4: Infinity knot -->
+  <div class="principle flip">
+    <div class="p-text">
+      <p class="p-tag">Structure</p>
+      <h3>Infinity Knot + Negative Ring Space</h3>
+      <p class="p-body">
+        The lower-mid section contains a clear figure-8 infinity knot —
+        this is a designed shape, not just a coil. It's a centerpiece of the composition.
+        <br><br>
+        Throughout the piece, large ring shapes create open negative space voids.
+        These aren't gaps — they're designed shapes. The circles of skin inside the coils
+        are compositionally intentional. The top of the snake also curls back on itself
+        as it ascends toward the ribs, adding another layer of looping self-referential energy.
+      </p>
+    </div>
+    <div class="p-img">
+      <img src="images/design.png" alt="Infinity knot visible in design" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="img-ph"><code>images/design.png</code>Design — infinity knot in lower half</div>
+    </div>
+  </div>
+
+  <!-- Principle 5: Directional Flow -->
+  <div class="principle" style="grid-template-columns: 1fr; gap: 40px; border-bottom: none">
+    <div class="p-text">
+      <p class="p-tag">Flow</p>
+      <h3>Consistent Directional Zig-Zag</h3>
+      <p class="p-body" style="max-width: 680px">
+        The snake's overall motion follows a consistent upward zig-zag — not random, not chaotic.
+        The zig-zag size increases proportionally as the leg gets wider going up.
+        At the top, the composition shifts to going straight up to align with
+        the transition from leg to hip.
+        <br><br>
+        Breathing room is maintained at the front edge — the snake never crowds the border.
+        The comparison below shows coherent directional flow (left) versus
+        directionless chaos (right). The left is the goal.
+      </p>
+    </div>
+    <div class="comparison-wrap">
+      <img src="images/comparison.png" alt="Good vs bad directional flow" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="img-ph" style="min-height: 420px"><code>images/comparison.png</code>Good vs bad directional flow — side-by-side comparison</div>
+    </div>
+  </div>
+
+</section>
+
+<div class="divider"></div>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!--  04 — CHECKLIST                         -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section>
+  <p class="sec-label">04 — The Brief</p>
+  <h2>Bobby's Checklist</h2>
+  <p class="sec-intro">
+    Everything that carries over from Bayun's design.
+  </p>
+
+  <div class="checklist">
+    <div>
+      <div class="check">
+        <div class="checkbox"></div>
+        <div class="check-label">
+          Closed mouth, calm head
+          <span class="check-sub">No open jaw — the snake is peaceful, not a strike pose</span>
+        </div>
+      </div>
+      <div class="check">
+        <div class="checkbox"></div>
+        <div class="check-label">
+          Tapered diamond overall silhouette
+          <span class="check-sub">Wide at hip/quad, narrowing to a point at the ankle — mirrors the leg</span>
+        </div>
+      </div>
+      <div class="check">
+        <div class="checkbox"></div>
+        <div class="check-label">
+          Triangle framing in the upper section
+          <span class="check-sub">Upper coils form a triangle; head direction aligns with the oblique muscle line</span>
+        </div>
+      </div>
+      <div class="check">
+        <div class="checkbox"></div>
+        <div class="check-label">
+          Head overlaps its own body
+          <span class="check-sub">Möbius effect — the motion never starts or ends</span>
+        </div>
+      </div>
+      <div class="check">
+        <div class="checkbox"></div>
+        <div class="check-label">
+          Clear infinity knot in lower/mid composition
+          <span class="check-sub">A deliberate figure-8 shape — not just a coil</span>
+        </div>
+      </div>
+      <div class="check">
+        <div class="checkbox"></div>
+        <div class="check-label">
+          Large negative ring spaces preserved
+          <span class="check-sub">Open coil voids are designed shapes — don't fill them</span>
+        </div>
+      </div>
+      <div class="check">
+        <div class="checkbox"></div>
+        <div class="check-label">
+          Top section curls back on itself
+          <span class="check-sub">As the snake ascends toward the ribs, it folds back — continuous looping energy</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="check">
+        <div class="checkbox"></div>
+        <div class="check-label">
+          Consistent upward zig-zag directional flow
+          <span class="check-sub">Overall motion is coherent and directed — not chaotic or reversing</span>
+        </div>
+      </div>
+      <div class="check">
+        <div class="checkbox"></div>
+        <div class="check-label">
+          Zig-zag scale increases with leg width
+          <span class="check-sub">Loops get proportionally wider as the leg widens going up</span>
+        </div>
+      </div>
+      <div class="check">
+        <div class="checkbox"></div>
+        <div class="check-label">
+          Breathing room at the front edge
+          <span class="check-sub">Negative space at the compositional border — snake doesn't crowd the boundary</span>
+        </div>
+      </div>
+      <div class="check">
+        <div class="checkbox"></div>
+        <div class="check-label">
+          Body follows body contours naturally
+          <span class="check-sub">Loops at waist, rear, and quad look like they belong — not placed on top</span>
+        </div>
+      </div>
+      <div class="check">
+        <div class="checkbox"></div>
+        <div class="check-label">
+          Dual-texture scales
+          <span class="check-sub">Diamond/rhombus scales dorsal; tight horizontal parallel lines ventral (belly)</span>
+        </div>
+      </div>
+      <div class="check">
+        <div class="checkbox"></div>
+        <div class="check-label">
+          Deep black in shadows and folds
+          <span class="check-sub">Fully saturated black in coil folds — no soft grey washes</span>
+        </div>
+      </div>
+      <div class="check">
+        <div class="checkbox"></div>
+        <div class="check-label">
+          Wispy motion lines from head and tail
+          <span class="check-sub">3–5 fine curving lines suggesting motion — sparse, not overdone</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Design by <a href="https://www.instagram.com/bayun.tattoos" target="_blank">@bayun.tattoos</a></span>
+  <span>Brief prepared for Bobby</span>
+</footer>
+
+</body>
+</html>
